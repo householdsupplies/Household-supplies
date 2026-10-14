@@ -146,16 +146,20 @@ button:active {
   }
 
   .row {
-    grid-template-columns: 32px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: auto auto;
-    gap: 7px;
+    gap: 8px;
+    padding: 10px;
+    background: #fff9f6;
+    border: 1px solid #f3e6e5;
+    border-radius: 16px;
   }
 
   .number {
     grid-column: 1;
     grid-row: 1;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 
   .item-name {
@@ -174,7 +178,7 @@ button:active {
   }
 
   input {
-    padding: 11px 8px;
+    padding: 12px 9px;
     font-size: 14px;
   }
 }
