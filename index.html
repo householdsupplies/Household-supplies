@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta name="google-site-verification" content="EhETp-gC2O12hN2p9TXxNNstEFTf6fuPFiBI6bzRLTg"/>
+  <meta name="google-site-verification" content="EhETp-gC2O12hN2p9TXxNNstEFTf6fuPFiBI6bzRLTg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>طلبات البيت</title>
@@ -10,11 +10,20 @@
 <body>
   <main class="container">
     <h1>طلبات البيت</h1>
-    <p class="subtitle">اكتبي الطلب والسعر. يظهر سطر جديد تلقائيًا.</p>
-    <div class="heading"><span>رقم</span><span>الطلب</span><span>السعر</span></div>
+    <p class="subtitle">اكتبي الطلب والكمية وسعر الوحدة. يظهر سطر جديد تلقائيًا.</p>
+
+    <div class="heading">
+      <span>رقم</span>
+      <span>الطلب</span>
+      <span>الكمية</span>
+      <span>سعر الوحدة</span>
+    </div>
+
     <div id="items"></div>
+
     <button id="createButton" type="button">إنشاء وطباعة PDF</button>
   </main>
+
   <script src="script.js"></script>
 </body>
 </html>
