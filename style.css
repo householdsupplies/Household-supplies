@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   min-height: 100vh;
@@ -29,7 +31,9 @@ h1 {
   font-size: clamp(28px, 5vw, 38px);
 }
 
-h1::before { content: "🛒 "; }
+h1::before {
+  content: "🛒 ";
+}
 
 .subtitle {
   margin: 10px 0 28px;
@@ -38,10 +42,11 @@ h1::before { content: "🛒 "; }
   line-height: 1.8;
 }
 
-.heading, .row {
+.heading,
+.row {
   display: grid;
-  grid-template-columns: 54px minmax(0, 1fr) 145px;
-  gap: 12px;
+  grid-template-columns: 48px minmax(0, 1fr) 100px 135px;
+  gap: 10px;
   align-items: center;
 }
 
@@ -53,7 +58,9 @@ h1::before { content: "🛒 "; }
   border-radius: 12px;
 }
 
-.row { margin-top: 10px; }
+.row {
+  margin-top: 10px;
+}
 
 .number {
   display: grid;
@@ -80,9 +87,20 @@ input {
   transition: border-color .18s, box-shadow .18s, background .18s;
 }
 
-input::placeholder { color: #aaa1aa; }
-input:focus { background: #fff; border-color: #f29a70; box-shadow: 0 0 0 4px #f29a7026; }
-input[type="number"] { direction: ltr; text-align: right; }
+input::placeholder {
+  color: #aaa1aa;
+}
+
+input:focus {
+  background: #fff;
+  border-color: #f29a70;
+  box-shadow: 0 0 0 4px #f29a7026;
+}
+
+input[type="number"] {
+  direction: ltr;
+  text-align: right;
+}
 
 button {
   display: block;
@@ -100,15 +118,47 @@ button {
   transition: transform .18s, box-shadow .18s;
 }
 
-button::before { content: "✨ "; }
-button:hover { transform: translateY(-2px); box-shadow: 0 11px 22px #e85d7548; }
-button:active { transform: translateY(0); }
+button::before {
+  content: "✨ ";
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 22px #e85d7548;
+}
+
+button:active {
+  transform: translateY(0);
+}
 
 @media (max-width: 520px) {
-  body { padding: 22px 12px; }
-  .container { padding: 24px 14px; border-radius: 18px; }
-  .heading, .row { grid-template-columns: 38px minmax(0, 1fr) 96px; gap: 7px; }
-  .heading { padding: 11px 8px; }
-  input { padding: 11px 8px; font-size: 14px; }
-  .number { width: 32px; height: 32px; }
+  body {
+    padding: 22px 12px;
+  }
+
+  .container {
+    padding: 24px 14px;
+    border-radius: 18px;
+  }
+
+  .heading,
+  .row {
+    grid-template-columns: 32px minmax(0, 1fr) 66px 90px;
+    gap: 5px;
+  }
+
+  .heading {
+    padding: 11px 8px;
+    font-size: 13px;
+  }
+
+  input {
+    padding: 11px 8px;
+    font-size: 14px;
+  }
+
+  .number {
+    width: 32px;
+    height: 32px;
+  }
 }
