@@ -102,10 +102,18 @@ input[type="number"] {
   text-align: right;
 }
 
+.actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
 button {
   display: block;
-  margin: 28px auto 0;
-  padding: 14px 32px;
+  margin: 0;
+  padding: 14px 24px;
   color: #fff;
   background: linear-gradient(135deg, #f28c5b, #e85d75);
   border: 0;
@@ -129,6 +137,19 @@ button:hover {
 
 button:active {
   transform: translateY(0);
+}
+
+.share-button {
+  background: linear-gradient(135deg, #35b875, #168c5b);
+  box-shadow: 0 8px 18px #168c5b38;
+}
+
+.share-button::before {
+  content: "📲 ";
+}
+
+.share-button:hover {
+  box-shadow: 0 11px 22px #168c5b48;
 }
 
 @media (max-width: 520px) {
@@ -180,5 +201,13 @@ button:active {
   input {
     padding: 12px 9px;
     font-size: 14px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
   }
 }
