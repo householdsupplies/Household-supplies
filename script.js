@@ -63,20 +63,14 @@ function escapeHtml(value) {
   }[ch]));
 }
 
-// إنشاء القائمة وفتح نافذة الطباعة
-document.getElementById('createButton').addEventListener('click', () => {
-  const items = getItems();
-
-  if (!items.length) {
-    alert('اكتبي طلبًا واحدًا على الأقل.');
-    return;
-  }
-
-  const total = items.reduce((sum, item) => {
-    return sum + (item.quantity * item.price);
+function calculateTotal(items) {
+  return items.reduce((sum, item) => {
+    return sum + item.quantity * item.price;
   }, 0);
+}
 
-  const tableRows = items.map((item, index) => {
+function makeTableRows(items) {
+  return items.map((item, index) => {
     const itemTotal = item.quantity * item.price;
 
     return (
@@ -89,7 +83,19 @@ document.getElementById('createButton').addEventListener('click', () => {
       '</tr>'
     );
   }).join('');
+}
 
+// إنشاء القائمة للطباعة أو الحفظ كـ PDF
+document.getElementById('createButton').addEventListener('click', () => {
+  const items = getItems();
+
+  if (!items.length) {
+    alert('اكتبي طلبًا واحدًا على الأقل.');
+    return;
+  }
+
+  const total = calculateTotal(items);
+  const tableRows = makeTableRows(items);
   const win = window.open('', '_blank');
 
   if (!win) {
@@ -106,10 +112,11 @@ document.getElementById('createButton').addEventListener('click', () => {
       '<meta charset="UTF-8">' +
       '<title>طلبات البيت</title>' +
       '<style>' +
-        'body{font-family:Tahoma,Arial,sans-serif;padding:30px}' +
+        'body{font-family:Tahoma,Arial,sans-serif;padding:30px;color:#222}' +
         'h1{text-align:center}' +
         'table{width:100%;border-collapse:collapse}' +
         'th,td{border:1px solid #999;padding:12px;text-align:right}' +
+        'th{background:#f2f2f2}' +
         '.total{margin-top:20px;padding:12px;border:1px solid #999;font-size:20px;font-weight:bold}' +
       '</style>' +
     '</head>' +
@@ -139,7 +146,7 @@ document.getElementById('createButton').addEventListener('click', () => {
   }, 500);
 });
 
-// إنشاء ملف PDF ومشاركته
+// مشاركة ملف PDF نفسه
 document.getElementById('shareButton').addEventListener('click', async () => {
   const items = getItems();
 
@@ -149,54 +156,48 @@ document.getElementById('shareButton').addEventListener('click', async () => {
   }
 
   if (typeof html2pdf === 'undefined') {
-    alert('مكتبة إنشاء PDF لم تحمل. تأكدي من إضافة سطر المكتبة إلى index.html ووجود اتصال بالإنترنت.');
+    alert('مكتبة PDF لم تحمل. تأكدي من إضافة سطر المكتبة إلى index.html ووجود اتصال بالإنترنت.');
     return;
   }
 
-  const total = items.reduce((sum, item) => {
-    return sum + (item.quantity * item.price);
-  }, 0);
-
-  const tableRows = items.map((item, index) => {
-    const itemTotal = item.quantity * item.price;
-
-    return (
-      '<tr>' +
-        '<td>' + (index + 1) + '</td>' +
-        '<td>' + (item.name ? escapeHtml(item.name) : '—') + '</td>' +
-        '<td>' + (item.quantityText ? item.quantity : '—') + '</td>' +
-        '<td>' + (item.priceText ? item.price.toFixed(2) : '—') + '</td>' +
-        '<td>' + (item.priceText ? itemTotal.toFixed(2) : '—') + '</td>' +
-      '</tr>'
-    );
-  }).join('');
-
+  const total = calculateTotal(items);
+  const tableRows = makeTableRows(items);
   const pdfElement = document.createElement('div');
 
   pdfElement.dir = 'rtl';
   pdfElement.style.cssText =
-    'position:fixed;inset:0;z-index:999999;overflow:auto;' +
-    'padding:28px;background:#fff;color:#222;' +
+    'position:absolute;top:0;left:0;width:794px;min-height:1123px;' +
+    'z-index:999999;overflow:visible;padding:40px;background:#fff;color:#222;' +
     'font-family:Tahoma,Arial,sans-serif;direction:rtl;';
 
   pdfElement.innerHTML =
-    '<div style="max-width:900px;margin:auto">' +
-      '<h1 style="text-align:center">قائمة طلبات البيت</h1>' +
-      '<p>التاريخ: ' + new Date().toLocaleDateString('ar-EG') + '</p>' +
-      '<table style="width:100%;border-collapse:collapse">' +
+    '<div style="width:100%;background:#fff">' +
+      '<h1 style="text-align:center;color:#222">قائمة طلبات البيت</h1>' +
+      '<p style="color:#222">التاريخ: ' +
+        new Date().toLocaleDateString('ar-EG') +
+      '</p>' +
+      '<table style="width:100%;border-collapse:collapse;color:#222">' +
         '<thead><tr>' +
-          '<th style="border:1px solid #999;padding:12px;text-align:right">رقم</th>' +
-          '<th style="border:1px solid #999;padding:12px;text-align:right">الطلب</th>' +
-          '<th style="border:1px solid #999;padding:12px;text-align:right">الكمية</th>' +
-          '<th style="border:1px solid #999;padding:12px;text-align:right">سعر الوحدة</th>' +
-          '<th style="border:1px solid #999;padding:12px;text-align:right">إجمالي الطلب</th>' +
+          '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">رقم</th>' +
+          '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">الطلب</th>' +
+          '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">الكمية</th>' +
+          '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">سعر الوحدة</th>' +
+          '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">إجمالي الطلب</th>' +
         '</tr></thead>' +
         '<tbody>' + tableRows + '</tbody>' +
       '</table>' +
-      '<div style="margin-top:20px;padding:12px;border:1px solid #999;font-size:20px;font-weight:bold">' +
+      '<div style="margin-top:20px;padding:12px;border:1px solid #999;font-size:20px;font-weight:bold;color:#222">' +
         'الإجمالي الكلي: ' + total.toFixed(2) +
       '</div>' +
     '</div>';
+
+  // أضف تنسيقًا واضحًا لخلايا الجدول في ملف PDF
+  pdfElement.querySelectorAll('td').forEach(cell => {
+    cell.style.border = '1px solid #999';
+    cell.style.padding = '12px';
+    cell.style.textAlign = 'right';
+    cell.style.color = '#222';
+  });
 
   document.body.appendChild(pdfElement);
 
@@ -206,10 +207,22 @@ document.getElementById('shareButton').addEventListener('click', async () => {
         margin: 10,
         filename: 'طلبات-البيت.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          windowWidth: 794
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait'
+        },
+        pagebreak: {
+          mode: ['css', 'legacy']
+        }
       })
       .from(pdfElement)
+      .toPdf()
       .outputPdf('blob');
 
     pdfElement.remove();
