@@ -2,20 +2,23 @@
 <html lang="ar" dir="rtl">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PQR0WJHQHD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQR0WJHQHD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-PQR0WJHQHD');
+  </script>
 
-  gtag('config', 'G-PQR0WJHQHD');
-</script>
   <meta name="google-site-verification" content="EhETp-gC2O12hN2p9TXxNNstEFTf6fuPFiBI6bzRLTg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>طلبات البيت</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <main class="container">
     <h1>طلبات البيت</h1>
@@ -30,13 +33,13 @@
 
     <div id="items"></div>
 
-    <button id="createButton" type="button">إنشاء وطباعة PDF</button>
     <div class="actions">
-  <button id="createButton" type="button">إنشاء وطباعة PDF</button>
-  <button id="shareButton" class="share-button" type="button">مشاركة واتساب</button>
-</div>
+      <button id="createButton" type="button">إنشاء وطباعة PDF</button>
+      <button id="shareButton" class="share-button" type="button">مشاركة واتساب</button>
+    </div>
   </main>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
