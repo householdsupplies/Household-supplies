@@ -36,18 +36,8 @@ function ensureLastRow() {
   }
 }
 
-function escapeHtml(value) {
-  return value.replace(/[&<>"']/g, ch => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[ch]));
-}
-
-document.getElementById('createButton').addEventListener('click', () => {
-  const items = [...itemsBox.querySelectorAll('.row')]
+function getItems() {
+  return [...itemsBox.querySelectorAll('.row')]
     .map(row => {
       const quantityText = row.querySelector('.item-quantity').value.trim();
       const priceText = row.querySelector('.item-price').value.trim();
@@ -61,6 +51,21 @@ document.getElementById('createButton').addEventListener('click', () => {
       };
     })
     .filter(item => item.name || item.quantityText || item.priceText);
+}
+
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
+}
+
+// إنشاء القائمة وفتح نافذة الطباعة أو حفظها PDF
+document.getElementById('createButton').addEventListener('click', () => {
+  const items = getItems();
 
   if (!items.length) {
     alert('اكتبي طلبًا واحدًا على الأقل.');
@@ -132,6 +137,51 @@ document.getElementById('createButton').addEventListener('click', () => {
     win.focus();
     win.print();
   }, 500);
+});
+
+// مشاركة القائمة على واتساب
+document.getElementById('shareButton').addEventListener('click', () => {
+  const items = getItems();
+
+  if (!items.length) {
+    alert('اكتبي طلبًا واحدًا على الأقل قبل المشاركة.');
+    return;
+  }
+
+  const total = items.reduce((sum, item) => {
+    return sum + (item.quantity * item.price);
+  }, 0);
+
+  const itemLines = items.map((item, index) => {
+    const quantity = item.quantityText ? item.quantity : 1;
+    const unitPrice = item.priceText
+      ? item.price.toFixed(2)
+      : 'غير محدد';
+    const itemTotal = item.priceText
+      ? (quantity * item.price).toFixed(2)
+      : 'غير محدد';
+
+    return (
+      (index + 1) + '. ' + (item.name || 'طلب بدون اسم') +
+      ' | الكمية: ' + quantity +
+      ' | سعر الوحدة: ' + unitPrice +
+      ' | إجمالي الطلب: ' + itemTotal
+    );
+  });
+
+  const message = [
+    '🛒 قائمة طلبات البيت',
+    'التاريخ: ' + new Date().toLocaleDateString('ar-EG'),
+    '',
+    ...itemLines,
+    '',
+    'الإجمالي الكلي: ' + total.toFixed(2)
+  ].join('\n');
+
+  const whatsappUrl =
+    'https://wa.me/?text=' + encodeURIComponent(message);
+
+  window.open(whatsappUrl, '_blank');
 });
 
 for (let i = 0; i < 5; i++) {
