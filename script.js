@@ -1,4 +1,5 @@
 const itemsBox = document.getElementById('items');
+const STORAGE_KEY = 'household-orders';
 
 function addRow() {
   const row = document.createElement('div');
@@ -13,7 +14,10 @@ function addRow() {
   renumber();
 
   row.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', ensureLastRow);
+    input.addEventListener('input', () => {
+      ensureLastRow();
+      saveItems();
+    });
   });
 }
 
@@ -27,6 +31,8 @@ function ensureLastRow() {
   const rows = [...itemsBox.querySelectorAll('.row')];
   const last = rows[rows.length - 1];
 
+  if (!last) return;
+
   const name = last.querySelector('.item-name').value.trim();
   const quantity = last.querySelector('.item-quantity').value.trim();
   const price = last.querySelector('.item-price').value.trim();
@@ -34,6 +40,63 @@ function ensureLastRow() {
   if (name || quantity || price) {
     addRow();
   }
+}
+
+function saveItems() {
+  const savedRows = [...itemsBox.querySelectorAll('.row')]
+    .map(row => ({
+      name: row.querySelector('.item-name').value,
+      quantity: row.querySelector('.item-quantity').value,
+      price: row.querySelector('.item-price').value
+    }))
+    .filter(item =>
+      item.name.trim() || item.quantity.trim() || item.price.trim()
+    );
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedRows));
+  } catch (error) {
+    console.error('تعذر حفظ القائمة على الجهاز:', error);
+  }
+}
+
+function loadItems() {
+  let savedRows = [];
+
+  try {
+    savedRows = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+    if (!Array.isArray(savedRows)) {
+      savedRows = [];
+    }
+  } catch (error) {
+    savedRows = [];
+  }
+
+  if (savedRows.length > 0) {
+    savedRows.forEach(item => {
+      addRow();
+
+      const row = itemsBox.lastElementChild;
+      row.querySelector('.item-name').value = item.name || '';
+      row.querySelector('.item-quantity').value = item.quantity || '';
+      row.querySelector('.item-price').value = item.price || '';
+    });
+
+    // إضافة سطر فارغ جديد بعد الطلبات المحفوظة
+    addRow();
+
+    // الحفاظ على خمسة أسطر على الأقل
+    while (itemsBox.querySelectorAll('.row').length < 5) {
+      addRow();
+    }
+  } else {
+    for (let i = 0; i < 5; i++) {
+      addRow();
+    }
+  }
+
+  renumber();
 }
 
 function getItems() {
@@ -268,6 +331,26 @@ document.getElementById('shareButton').addEventListener('click', async () => {
   alert('تم تنزيل ملف PDF. افتحي واتساب وأرفقي الملف من التنزيلات.');
 });
 
-for (let i = 0; i < 5; i++) {
-  addRow();
+// زر مسح الكل، إذا كان موجودًا في index.html
+const clearButton =
+  document.getElementById('clearButton') ||
+  document.getElementById('clearAllButton');
+
+if (clearButton) {
+  clearButton.addEventListener('click', () => {
+    const shouldClear = confirm('هل تريدين مسح كل الطلبات المحفوظة؟');
+    if (!shouldClear) return;
+
+    localStorage.removeItem(STORAGE_KEY);
+    itemsBox.innerHTML = '';
+
+    for (let i = 0; i < 5; i++) {
+      addRow();
+    }
+
+    renumber();
+  });
 }
+
+// استرجاع القائمة المحفوظة عند فتح الصفحة
+loadItems();
