@@ -206,6 +206,14 @@ button:active {
   .actions {
     flex-direction: column;
   }
+  .clear-button {
+  background: #777;
+  box-shadow: 0 8px 18px #7773;
+}
+
+.clear-button::before {
+  content: "🗑️ ";
+}
 
   .actions button {
     width: 100%;
