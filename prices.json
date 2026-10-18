@@ -4,699 +4,699 @@
     "price": 23.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:39Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "ارز مصرى الضحى - 1 كجم",
     "price": 40.95,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:39Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "دراهم أرز مصري - 1 كجم",
     "price": 26.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:39Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "مكرونة مرمرية الملكة - 400 جم",
     "price": 13.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:39Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "ريحانه أرز أبيض مصري - 1 كجم",
     "price": 38.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "المطبخ مكرونة سباجيتي - 400 جم",
-    "price": 12.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "مكرونة فرن الملكة - 400 جرام",
-    "price": 13.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "مكرونة اسباجيتى من الملكة - 1 كجم",
-    "price": 34.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "مكرونة فرن الملكة - 1 كجم",
     "price": 34.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
+  },
+  {
+    "name": "مكرونة اسباجيتى من الملكة - 1 كجم",
+    "price": 34.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "لسان عصفور الملكة - 400 جرام",
     "price": 13.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
+    "updatedAt": "2026-10-18T02:22:19Z"
+  },
+  {
+    "name": "المطبخ مكرونة سباجيتي - 400 جم",
+    "price": 12.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:19Z"
+  },
+  {
+    "name": "مكرونة فرن الملكة - 400 جرام",
+    "price": 13.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:19Z"
   },
   {
     "name": "زمزم أرز مصري - 1 كجم",
     "price": 35.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "شعيرية أهل القمة - 400 جرام",
-    "price": 10.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "شعرية المطبخ - 400 جرام",
     "price": 12.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "مكرونة فرن إيطاليانو - 400جم",
     "price": 23.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "مكرونة فرن أهل القمة - 300 جرام",
-    "price": 8.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "مكرونة مرمرية إيطاليانو - 400جم",
-    "price": 23.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:40Z"
-  },
-  {
-    "name": "المطبخ المصرى مكرونة خواتم - 400 جرام",
-    "price": 12.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "شعرية الملكة - 400 جرام",
-    "price": 13.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "المطبخ لسان عصفور - 400 جرام",
-    "price": 12.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "إيطاليانو مكرونة فيتوتشيني - 400جم",
     "price": 23.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
-    "name": "مكرونة خواتم الملكة - 1 كجم",
-    "price": 34.99,
+    "name": "شعرية الملكة - 400 جرام",
+    "price": 13.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "الساعة أرز ابيض - 1 كجم",
     "price": 39.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "المطبخ المصرى مكرونة خواتم - 400 جرام",
+    "price": 12.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "المطبخ لسان عصفور - 400 جرام",
+    "price": 12.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "ارز بسمتي هندي زمزم - 1 كجم",
     "price": 67.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "مكرونة خواتم الملكة - 1 كجم",
+    "price": 34.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "مكرونة فرن أهل القمة - 300 جرام",
+    "price": 8.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "مكرونة مرمرية إيطاليانو - 400جم",
+    "price": 23.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "شعريه الملكة - 1 كجم",
     "price": 34.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "أرز دراهم بسمتى - 1 كجم",
-    "price": 59.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "شعرية ايطاليانو - 400 جرام",
-    "price": 23.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "ايطاليانو اسباجيتي باستا - 1 كجم",
-    "price": 59.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "شعيرية أهل القمة - 300 جرام",
-    "price": 8.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "مكرونة اسباجتي الملكة - 400 جرام",
-    "price": 13.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "مكرونة اصداف ايطاليانو - 400 جرام",
     "price": 23.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "لسان عصفور إيطاليانو - 400جم",
-    "price": 23.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:41Z"
-  },
-  {
-    "name": "ريجينا مكرونة اسباجتى - 400 جم",
-    "price": 30.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
-  },
-  {
-    "name": "إيطاليانو مكرونة فرن - 1 كجم",
-    "price": 59.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
-  },
-  {
-    "name": "ايطاليانو مكرونة فيوزيللى - 400 جم",
-    "price": 23.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
-  },
-  {
-    "name": "مكرونة هلالية أهل القمة - 300 جرام",
-    "price": 8.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
   },
   {
     "name": "الملكة مكرونة هلالية - 400 جرام",
     "price": 13.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "ايطاليانو مكرونة فيوزيللى - 400 جم",
+    "price": 23.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:20Z"
+  },
+  {
+    "name": "مكرونة اسباجتي الملكة - 400 جرام",
+    "price": 13.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "ايطاليانو اسباجيتي باستا - 1 كجم",
+    "price": 59.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "شعرية ايطاليانو - 400 جرام",
+    "price": 23.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "أرز دراهم بسمتى - 1 كجم",
+    "price": 59.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "لسان عصفور إيطاليانو - 400جم",
+    "price": 23.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "ريجينا مكرونة اسباجتى - 400 جم",
+    "price": 30.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "إيطاليانو مكرونة فرن - 1 كجم",
+    "price": 59.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "شعيرية أهل القمة - 300 جرام",
+    "price": 8.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
+  },
+  {
+    "name": "مكرونة هلالية أهل القمة - 300 جرام",
+    "price": 8.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "الضحى مكرونة مرمرية - 400 جرام",
     "price": 23.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
-  },
-  {
-    "name": "مكرونة خواتم أهل القمة - 400 جرام",
-    "price": 10.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "شعيرية أهل القمة - 1 كجم",
     "price": 25.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "مكرونة سباجتي ايطاليانو - 400 جرام",
     "price": 23.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "مكرونة هلاليه الملكة - 1 كجم",
     "price": 34.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
-  },
-  {
-    "name": "مكرونة فرن أهل القمة - 400 جرام",
-    "price": 10.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
-  },
-  {
-    "name": "ارز مصري الضحى - 5 كجم",
-    "price": 204.0,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "ريجينا مكرونة سباجتى - 1 كجم",
     "price": 57.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "مكرونة مرمرية الملكة - 1 كجم",
     "price": 34.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:21Z"
   },
   {
     "name": "مكرونة مرمرية أهل القمة - 1 كجم",
     "price": 25.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "مكرونة ودعة ريجينا - 400 جم",
     "price": 30.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:42Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
-    "name": "مكرونة خواتم أهل القمة - 300 جرام",
-    "price": 8.5,
+    "name": "مكرونة خواتم أهل القمة - 400 جرام",
+    "price": 10.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
+  },
+  {
+    "name": "مكرونة فرن أهل القمة - 400 جرام",
+    "price": 10.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "فريك الضحى - 500 جم",
     "price": 62.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "أرز بسمتي فاخر من حاج عرفة",
     "price": 27.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "عاصم أرز ابيض مصري - 1 كجم",
     "price": 37.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "الضحى مكرونة خواتم - 400 جرام",
     "price": 23.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
+  },
+  {
+    "name": "ايطاليانو مكرونة خواتم - 400 جم",
+    "price": 23.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "الضحى لسان عصفور - 400 جرام",
     "price": 23.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "لمتنا مكرونة لسان عصقور - 400 جم",
     "price": 14.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "الضحى مكرونة فيوزيللي - 400 جرام",
     "price": 23.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "أرز ابيض المطبخ - 1 كجم",
     "price": 39.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
+  },
+  {
+    "name": "ديليسيا مصرية مكرونة اسباجتي - 500 جرام",
+    "price": 24.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "لمتنا مكرونة مرمرية - 400 جم",
     "price": 14.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
+  },
+  {
+    "name": "فشار حاج عرفة",
+    "price": 18.75,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "كايرو مكرونة هلالية - 400 جرام",
     "price": 14.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
-  },
-  {
-    "name": "مكرونة هلالية أهل القمة - 1 كجم",
-    "price": 25.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:22Z"
   },
   {
     "name": "الضحى عدس اصفر - 500جم",
     "price": 62.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:43Z"
+    "updatedAt": "2026-10-18T02:22:23Z"
+  },
+  {
+    "name": "ستار مكرونة فرن - 400 جرام",
+    "price": 17.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:23Z"
   },
   {
     "name": "كيس قهوة نسكافيه كلاسيك سريعة التحضير - 200 جرام",
     "price": 261.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "نسكافيه كلاسيك قهوة سريعة الذوبان - 190 جم",
     "price": 265.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "نسكافيه كلاسيك - قهوة فورية - عبوة 18 جرام",
     "price": 33.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "نسكافية ازيرا اسبرسو 1.8ج",
     "price": 6.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "قهوة سريعة التحضير نيسكافيه 3 في 1 - 18جم",
     "price": 5.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "نسكافيه كلاسيك - 1.8 جم",
     "price": 4.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
-  },
-  {
-    "name": "نسكافيه كلاسيك قهوة سريعة التحضير - 95ج كيس",
-    "price": 143.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
-  },
-  {
-    "name": "عبوة إعادة تعبئة قهوة نسكافيه جولد سريعة التحضير - 190 جرام",
-    "price": 413.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
-  },
-  {
-    "name": "كوفي ميكس بونجورنو - 12 جرام - 12 كيس",
-    "price": 71.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "ظ†ط³ظƒط§ظپظٹط© ط¬ظˆظ„ط¯ ط¸ط±ظپ 1.8ط¬",
     "price": 5.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
+  },
+  {
+    "name": "نسكافيه كلاسيك قهوة سريعة التحضير - 95ج كيس",
+    "price": 143.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:25Z"
+  },
+  {
+    "name": "عبوة إعادة تعبئة قهوة نسكافيه جولد سريعة التحضير - 190 جرام",
+    "price": 413.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "قهوة سريعة التحضير نيسكافيه 3 في 1 بالكراميل - 18جم",
     "price": 5.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:25Z"
   },
   {
     "name": "نسكافيه إسبريسو - قهوة فورية - 1.8 جرام - 25 كيس",
     "price": 151.95,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
-    "name": "بونجورنو كوفي ميكس ميجا - 12 جم",
-    "price": 5.99,
+    "name": "كوفي ميكس بونجورنو - 12 جرام - 12 كيس",
+    "price": 71.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "نسكافيه كلاسيك - قهوة فورية - عبوة 1.8 جرام - 25 كيس",
     "price": 111.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
-  },
-  {
-    "name": "نسكافيه الأصلي 3 في 1 - 24 كيس",
-    "price": 142.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
-  },
-  {
-    "name": "نسكافيه كلاسيك قهوة سريعة الذوبان - 95 جم",
-    "price": 167.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:46Z"
-  },
-  {
-    "name": "نسكافيه جولد - قهوة فورية - عبوة 1.8 جرام",
-    "price": 136.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
-  },
-  {
-    "name": "نسكافيه كلاسيك قهوة سريعة الذوبان - 47.5 جم",
-    "price": 84.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "نسكافية 2*1 10ج",
     "price": 5.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
-    "name": "نسكافيه جولد قهوة سريعة التحضير - 47.5 جم",
-    "price": 144.99,
+    "name": "نسكافيه كلاسيك قهوة سريعة الذوبان - 47.5 جم",
+    "price": 84.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
-  },
-  {
-    "name": "قهوة سريعة الذوبان كارفور - 100 جم",
-    "price": 134.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
-  },
-  {
-    "name": "كيس بونجورنو كوفي ميكس - 400 جم",
-    "price": 148.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "قهوة سريعة التحضير نيسكافيه 3 في 1 بالبندق - 18جم",
     "price": 5.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
-    "name": "نسكافيه جولد بن سريع الذوبان - 47.5 جرام",
-    "price": 121.99,
+    "name": "بونجورنو كوفي ميكس ميجا - 12 جم",
+    "price": 5.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
-    "name": "نسكافيه جولد بن سريع الذوبان - 95 جرام",
-    "price": 232.99,
+    "name": "كيس بونجورنو كوفي ميكس - 400 جم",
+    "price": 148.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
+  },
+  {
+    "name": "نسكافيه كلاسيك قهوة سريعة الذوبان - 95 جم",
+    "price": 167.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:26Z"
+  },
+  {
+    "name": "نسكافيه جولد قهوة سريعة التحضير - 47.5 جم",
+    "price": 144.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:26Z"
+  },
+  {
+    "name": "قهوة سريعة الذوبان كارفور - 100 جم",
+    "price": 134.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:26Z"
+  },
+  {
+    "name": "نسكافيه الأصلي 3 في 1 - 24 كيس",
+    "price": 142.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "قهوة 3في1 نسكافيه ريتش - 21 جم",
     "price": 9.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
-    "name": "نسكافيه ميلكي 3 في 1 - 20جم",
-    "price": 10.99,
+    "name": "نسكافيه جولد - قهوة فورية - عبوة 1.8 جرام",
+    "price": 136.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
+  },
+  {
+    "name": "نسكافيه جولد بن سريع الذوبان - 47.5 جرام",
+    "price": 121.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "مصر كافيه قهوة سريعة التحضير - 2 جرام",
     "price": 3.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
-    "name": "12*بونجورنو كوفى ميكس خمسينا 2*1 6ج",
-    "price": 35.5,
+    "name": "نسكافيه جولد بن سريع الذوبان - 95 جرام",
+    "price": 232.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:47Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "بورجورنو كابيتشينو قهوة دابل - 18 جرام",
     "price": 8.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
-  },
-  {
-    "name": "نسكافيه الأصلي 3 في 1 ريتش - 12 كيس",
-    "price": 119.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "كابوتشينو فانيليا نسكافيه - 18جم",
     "price": 12.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
-  },
-  {
-    "name": "قهوة سريعة التحضير نيسكافيه 3 في 1 بالشيكولاتة - 18جم",
-    "price": 5.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
-  },
-  {
-    "name": "كارفور جولد قهوة سريعة الذوبان - 100 جم",
-    "price": 234.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
-  },
-  {
-    "name": "نسكافيه جولد إسبريسو - قهوة فورية - عبوة 100 جرام",
-    "price": 322.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
-  },
-  {
-    "name": "قهوة سادة وسط ابو عوف - 200 جم",
-    "price": 237.99,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
   },
   {
     "name": "كابوتشينو موكا نسكافيه - 18جم",
     "price": 12.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
+    "updatedAt": "2026-10-18T02:22:26Z"
+  },
+  {
+    "name": "12*بونجورنو كوفى ميكس خمسينا 2*1 6ج",
+    "price": 35.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "نسكافيه ميلكي 3 في 1 - 20جم",
+    "price": 10.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "نسكافيه الأصلي 3 في 1 ريتش - 12 كيس",
+    "price": 119.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "قهوة سريعة التحضير نيسكافيه 3 في 1 بالشيكولاتة - 18جم",
+    "price": 5.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "كارفور جولد قهوة سريعة الذوبان - 100 جم",
+    "price": 234.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "نسكافيه جولد إسبريسو - قهوة فورية - عبوة 100 جرام",
+    "price": 322.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "قهوة سادة وسط ابو عوف - 200 جم",
+    "price": 237.99,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
+  },
+  {
+    "name": "بونجورنو كابتشينو فانيليا - 14 جم",
+    "price": 8.5,
+    "currency": "EGP",
+    "source": "Carrefour",
+    "updatedAt": "2026-10-18T02:22:27Z"
   },
   {
     "name": "حج عرفة بن فاتح وسط - 200 جرام",
     "price": 156.99,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
+    "updatedAt": "2026-10-18T02:22:27Z"
   },
   {
-    "name": "بونجورنو كابتشينو موكا - 14 جم",
-    "price": 8.5,
+    "name": "قهوة سريعة الذوبان 3*1من نسكافية جولد، 21 جرام",
+    "price": 12.5,
     "currency": "EGP",
     "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
-  },
-  {
-    "name": "نسكافيه جولد 3 في 1 - قهوة فورية - عبوة 21 جرام - 12 كيس",
-    "price": 149.5,
-    "currency": "EGP",
-    "source": "Carrefour",
-    "updatedAt": "2026-10-17T02:22:48Z"
+    "updatedAt": "2026-10-18T02:22:27Z"
   }
 ]
