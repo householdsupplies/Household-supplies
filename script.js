@@ -325,5 +325,33 @@ if (clearButton) {
   });
 }
 
+// الوضع الليلي: حفظ الاختيار على الجهاز
+(function setupThemeToggle() {
+  const themeToggle = document.getElementById('themeToggle');
+  if (!themeToggle) return;
+
+  let savedTheme = 'light';
+  try {
+    savedTheme = localStorage.getItem('household-theme') || 'light';
+  } catch (error) {}
+
+  function applyTheme(theme) {
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('dark-mode', isDark);
+    themeToggle.textContent = isDark ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+  }
+
+  applyTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+    try {
+      localStorage.setItem('household-theme', nextTheme);
+    } catch (error) {}
+  });
+})();
+
 // استرجاع القائمة عند فتح الموقع
 loadItems();
