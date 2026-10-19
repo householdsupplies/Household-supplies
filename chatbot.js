@@ -1,266 +1,355 @@
 
-(function () {
-  const style = document.createElement("div");
+(() => {
+  "use strict";
 
-  style.innerHTML = `
-    <button id="hs-chat-button" type="button"
-      aria-expanded="false" aria-controls="hs-chat-panel">
-      💬 اسأل عن المنتجات
-    </button>
+  const VISITOR_KEY = "household-visitor-name";
+  const WELCOMED_KEY = "household-visitor-welcomed";
 
-    <section id="hs-chat-panel" aria-label="مساعد طلبات البيت"
-      aria-hidden="true">
-      <div class="hs-chat-header">
-        <strong>مساعد طلبات البيت</strong>
-        <button id="hs-chat-close" type="button"
-          aria-label="إغلاق الدردشة">×</button>
-      </div>
+  const $ = (id) => document.getElementById(id);
 
-      <div id="hs-chat-messages" aria-live="polite"></div>
+  function initChatbot() {
+    const chatToggle = $("chatToggle");
+    const chatPanel = $("chatPanel");
+    const chatClose = $("chatClose");
+    const chatForm = $("chatForm");
+    const chatInput = $("chatInput");
+    const chatMessages = $("chatMessages");
 
-      <form id="hs-chat-form" class="hs-chat-form">
-        <input id="hs-chat-input" type="text"
-          placeholder="اكتب اسم المنتج..."
-          aria-label="اكتب سؤالك" maxlength="150" required>
-        <button type="submit">إرسال</button>
-      </form>
-    </section>
-  `;
+    const welcomeBar = $("welcomeBar");
+    const welcomeModal = $("welcomeModal");
+    const welcomeForm = $("welcomeForm");
+    const visitorNameInput = $("visitorName");
+    const skipWelcome = $("skipWelcome");
 
-  document.body.appendChild(style);
+    // لو عناصر الدردشة مش موجودة، ما نلمسش باقي الموقع.
+    if (
+      !chatToggle ||
+      !chatPanel ||
+      !chatForm ||
+      !chatInput ||
+      !chatMessages
+    ) {
+      return;
+    }
 
-  const toggle = document.getElementById("hs-chat-button");
-  const panel = document.getElementById("hs-chat-panel");
-  const close = document.getElementById("hs-chat-close");
-  const messages = document.getElementById("hs-chat-messages");
-  const form = document.getElementById("hs-chat-form");
-  const input = document.getElementById("hs-chat-input");
+    let products = [];
+    let productsLoaded = false;
 
-  let products = [];
-  let pricesLoaded = false;
+    function getVisitorName() {
+      try {
+        return localStorage.getItem(VISITOR_KEY) || "";
+      } catch {
+        return "";
+      }
+    }
 
-  function normalize(value) {
-    return String(value || "")
-      .toLowerCase()
-      .normalize("NFKC")
-      .replace(/[\u064B-\u065F\u0670]/g, "")
-      .replace(/[أإآٱ]/g, "ا")
-      .replace(/ى/g, "ي")
-      .replace(/ة/g, "ه")
-      .replace(/[ـ]/g, "")
-      .replace(/[^\p{L}\p{N}]+/gu, " ")
-      .trim();
-  }
+    function showWelcomeBar(name) {
+      if (!welcomeBar) return;
 
-  function addMessage(text, type) {
-    const message = document.createElement("div");
-    message.className = "hs-message hs-" + type;
-    message.textContent = text;
-    messages.appendChild(message);
-    messages.scrollTop = messages.scrollHeight;
-    return message;
-  }
+      welcomeBar.textContent = name
+        ? `أهلًا يا ${name} 👋 نورت طلبات البيت!`
+        : "أهلًا بيك 👋 نورت طلبات البيت!";
 
-  function showProducts(list) {
-    const message = document.createElement("div");
-    message.className = "hs-message hs-bot";
+      welcomeBar.hidden = false;
+    }
 
-    message.textContent = list.length
-      ? "لقيت المنتجات دي في قائمة الأسعار:"
-      : "ملقيتش منتج مطابق. جرّب كلمة أقصر، زي أرز أو مكرونة.";
+    function closeWelcomeModal() {
+      if (welcomeModal) welcomeModal.hidden = true;
+    }
 
-    if (list.length) {
-      list.slice(0, 6).forEach(product => {
-        const card = document.createElement("div");
-        card.className = "hs-product";
+    function saveVisitorName(name) {
+      const cleanName = String(name || "").trim().slice(0, 40);
 
-        const name = document.createElement("strong");
-        name.textContent = product.name;
+      try {
+        if (cleanName) {
+          localStorage.setItem(VISITOR_KEY, cleanName);
+        }
 
-        const price = document.createElement("span");
-        price.textContent =
-          Number(product.price).toFixed(2) + " جنيه";
+        localStorage.setItem(WELCOMED_KEY, "yes");
+      } catch {
+        // يظل الموقع قابلًا للاستخدام حتى لو التخزين غير متاح.
+      }
 
-        const add = document.createElement("button");
-        add.type = "button";
-        add.textContent = "أضف لقائمة الطلبات";
+      showWelcomeBar(cleanName || getVisitorName());
+      closeWelcomeModal();
+    }
 
-        add.addEventListener("click", () => {
-          if (typeof window.addRow !== "function") {
-            addMessage(
-              "تعذر الوصول لقائمة الطلبات. حدّث الصفحة وجرب تاني.",
-              "bot"
-            );
-            return;
-          }
+    // الترحيب بالزائر أول مرة على نفس المتصفح والجهاز.
+    try {
+      const savedName = getVisitorName();
+      const alreadyWelcomed =
+        localStorage.getItem(WELCOMED_KEY) === "yes";
 
-          const rows = [
-            ...document.querySelectorAll("#items .row")
-          ];
+      if (savedName || alreadyWelcomed) {
+        showWelcomeBar(savedName);
+        closeWelcomeModal();
+      } else if (welcomeModal) {
+        welcomeModal.hidden = false;
+      }
+    } catch {
+      closeWelcomeModal();
+    }
 
-          let row = rows.find(item =>
-            !item.querySelector(".item-name").value.trim() &&
-            !item.querySelector(".item-quantity").value.trim() &&
-            !item.querySelector(".item-price").value.trim()
-          );
+    if (welcomeForm) {
+      welcomeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-          if (!row) {
-            window.addRow();
-            row = document.querySelector("#items .row:last-child");
-          }
+        const name = visitorNameInput
+          ? visitorNameInput.value
+          : "";
 
-          if (!row) return;
-
-          row.querySelector(".item-name").value = product.name;
-          row.querySelector(".item-quantity").value = "1";
-          row.querySelector(".item-price").value = product.price;
-
-          row.querySelectorAll("input").forEach(field => {
-            field.dispatchEvent(new Event("input", {
-              bubbles: true
-            }));
-          });
-
-          add.disabled = true;
-          add.textContent = "تمت الإضافة ✓";
-        });
-
-        card.append(name, price, add);
-        message.appendChild(card);
+        saveVisitorName(name);
       });
     }
 
-    messages.appendChild(message);
-    messages.scrollTop = messages.scrollHeight;
-  }
-
-  function answer(question) {
-    const q = normalize(question);
-
-    if (!q) {
-      addMessage("اكتب اسم المنتج اللي بتدور عليه.", "bot");
-      return;
+    if (skipWelcome) {
+      skipWelcome.addEventListener("click", () => {
+        saveVisitorName("");
+      });
     }
 
-    if (/^(السلام عليكم|سلام|اهلا|اهلين|مرحبا|هاي|hi|hello)$/.test(q)) {
-      addMessage(
-        "أهلًا بيك في طلبات البيت! 👋 اسألني عن منتج أو سعره.",
-        "bot"
-      );
-      return;
+    // فتح وإغلاق نافذة الدردشة.
+    function setChatOpen(open) {
+      chatPanel.hidden = !open;
+      chatToggle.setAttribute("aria-expanded", String(open));
+
+      if (open) {
+        chatInput.focus();
+      }
     }
 
-    if (/^(شكرا|شكرا جدا|متشكر|تسلم)$/.test(q)) {
-      addMessage("العفو، تحت أمرك! 😊", "bot");
-      return;
+    chatToggle.addEventListener("click", () => {
+      setChatOpen(chatPanel.hidden);
+    });
+
+    if (chatClose) {
+      chatClose.addEventListener("click", () => {
+        setChatOpen(false);
+      });
     }
 
-    if (/^(مساعده|مساعدة|بتعمل ايه|ازاي استخدم الموقع)$/.test(q)) {
-      addMessage(
-        "اكتب اسم المنتج أو كلمة منه عشان أبحث في الأسعار. " +
-        "تقدر كمان تضغط «أضف لقائمة الطلبات» لإضافته للقائمة الحالية.",
-        "bot"
-      );
-      return;
+    function addMessage(message, type) {
+      const bubble = document.createElement("div");
+      bubble.className =
+        "chat-message " +
+        (type === "user" ? "user-message" : "bot-message");
+
+      // نستخدم textContent لتجنب إدخال HTML من رسائل المستخدم.
+      bubble.textContent = message;
+      chatMessages.appendChild(bubble);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    if (!pricesLoaded) {
-      addMessage(
-        "قائمة الأسعار لسه ما اتحملتش. جرّب تحديث الصفحة بعد قليل.",
-        "bot"
-      );
-      return;
+    function normalize(text) {
+      return String(text || "")
+        .toLowerCase()
+        .replace(/[أإآ]/g, "ا")
+        .replace(/ة/g, "ه")
+        .replace(/ى/g, "ي")
+        .replace(/[ًٌٍَُِّْـ]/g, "")
+        .trim();
     }
 
-    const words = q.split(/\s+/).filter(word => word.length > 1);
+    async function loadProducts() {
+      if (productsLoaded) return products;
 
-    const matches = products
-      .map(product => ({
-        product,
-        name: normalize(product.name)
-      }))
-      .filter(item => {
-        return item.name.includes(q) ||
-          (words.length > 0 &&
-           words.every(word => item.name.includes(word)));
-      })
-      .sort((a, b) => {
-        const aExact = a.name === q ? 1 : 0;
-        const bExact = b.name === q ? 1 : 0;
-        return bExact - aExact;
-      })
-      .map(item => item.product);
+      productsLoaded = true;
 
-    showProducts(matches);
-  }
+      try {
+        const response = await fetch("./prices.json", {
+          cache: "no-store"
+        });
 
-  function openChat() {
-    panel.classList.add("hs-open");
-    panel.setAttribute("aria-hidden", "false");
-    toggle.setAttribute("aria-expanded", "true");
-    input.focus();
-  }
+        if (!response.ok) {
+          throw new Error("تعذر تحميل ملف الأسعار");
+        }
 
-  function closeChat() {
-    panel.classList.remove("hs-open");
-    panel.setAttribute("aria-hidden", "true");
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.focus();
-  }
+        const data = await response.json();
 
-  toggle.addEventListener("click", () => {
-    if (panel.classList.contains("hs-open")) {
-      closeChat();
-    } else {
-      openChat();
-    }
-  });
-
-  close.addEventListener("click", closeChat);
-
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-
-    const question = input.value.trim();
-    if (!question) return;
-
-    addMessage(question, "user");
-    input.value = "";
-    answer(question);
-  });
-
-  addMessage(
-    "أهلًا بيك! 👋 اكتب اسم المنتج، زي أرز أو مكرونة، " +
-    "وهساعدك تلاقي سعره من القائمة الموجودة.",
-    "bot"
-  );
-
-  fetch("./prices.json", { cache: "no-store" })
-    .then(response => {
-      if (!response.ok) throw new Error("تعذر تحميل الأسعار");
-      return response.json();
-    })
-    .then(data => {
-      if (!Array.isArray(data)) {
-        throw new Error("صيغة ملف الأسعار غير صحيحة");
+        // يدعم ملف JSON الذي يحتوي على مصفوفة مباشرة
+        // أو كائن بداخله products أو items.
+        if (Array.isArray(data)) {
+          products = data;
+        } else if (Array.isArray(data.products)) {
+          products = data.products;
+        } else if (Array.isArray(data.items)) {
+          products = data.items;
+        } else {
+          products = [];
+        }
+      } catch (error) {
+        console.warn("Chatbot: لم يتم تحميل الأسعار.", error);
+        products = [];
       }
 
-      products = data.filter(product =>
-        product &&
-        typeof product.name === "string" &&
-        product.name.trim() &&
-        Number.isFinite(Number(product.price)) &&
-        product.price !== ""
-      );
+      return products;
+    }
 
-      pricesLoaded = true;
-    })
-    .catch(error => {
-      console.error("مساعد طلبات البيت:", error);
-      addMessage(
-        "مش قادر أوصل لملف الأسعار حاليًا. " +
-        "تأكد إن prices.json موجود في مجلد الموقع.",
-        "bot"
+    function getProductName(product) {
+      return String(
+        product.name ??
+        product.product ??
+        product.title ??
+        product.item ??
+        ""
       );
+    }
+
+    function getProductPrice(product) {
+      return (
+        product.price ??
+        product.priceEGP ??
+        product.amount ??
+        null
+      );
+    }
+
+    async function searchPrice(message) {
+      const list = await loadProducts();
+      const query = normalize(message);
+
+      const matches = list.filter((product) => {
+        const name = normalize(getProductName(product));
+        return name && (
+          query.includes(name) ||
+          name.includes(query)
+        );
+      });
+
+      if (!matches.length) return null;
+
+      const product = matches.sort((a, b) => {
+        return getProductName(b).length - getProductName(a).length;
+      })[0];
+
+      const name = getProductName(product);
+      const price = getProductPrice(product);
+
+      if (price === null || price === undefined || price === "") {
+        return `لقيت المنتج "${name}" في القائمة، لكن السعر مش متوفر في البيانات.`;
+      }
+
+      return `🛒 ${name}\n💰 السعر المسجل: ${price} جنيه.\n\nخلي بالك: ده السعر الموجود في ملف الموقع، ومش بالضرورة يكون سعر كارفور الحالي.`;
+    }
+
+    async function getReply(message) {
+      const text = normalize(message);
+
+      if (!text) {
+        return "اكتب سؤالك وأنا هحاول أساعدك 😊";
+      }
+
+      if (
+        text.includes("السلام عليكم") ||
+        text.includes("اهلا") ||
+        text.includes("ازيك") ||
+        text.includes("مرحبا") ||
+        text.includes("صباح الخير") ||
+        text.includes("مساء الخير")
+      ) {
+        const name = getVisitorName();
+        return name
+          ? `أهلًا يا ${name} 😊 أقدر أساعدك في البحث عن الأسعار أو استخدام الموقع.`
+          : "أهلًا بيك 😊 أقدر أساعدك في البحث عن الأسعار أو استخدام الموقع.";
+      }
+
+      if (
+        text.includes("شكرا") ||
+        text.includes("متشكر") ||
+        text.includes("تسلم")
+      ) {
+        return "العفو 😊 أنا موجود لو احتجت أي مساعدة.";
+      }
+
+      if (
+        text.includes("سعر") ||
+        text.includes("بكام") ||
+        text.includes("ثمن") ||
+        text.includes("تكلفه")
+      ) {
+        const priceReply = await searchPrice(message);
+
+        if (priceReply) return priceReply;
+
+        return "مش لاقي المنتج في ملف الأسعار الحالي. جرّب تكتب اسم المنتج زي ما هو مسجل في قائمة الموقع.";
+      }
+
+      if (
+        text.includes("pdf") ||
+        text.includes("بي دي اف") ||
+        text.includes("ملف") ||
+        text.includes("اطبع")
+      ) {
+        return "لإنشاء ملف PDF، استخدم زر إنشاء أو الطباعة الموجود في الموقع. لو ظهر ملف فاضي أو حصل خطأ، ما تمسحش بياناتك؛ ابعتلي كود index.html وscript.js عشان نراجع وظيفة الإنشاء من غير ما نغيّر باقي الموقع.";
+      }
+
+      if (
+        text.includes("شارك") ||
+        text.includes("واتساب") ||
+        text.includes("مشاركه")
+      ) {
+        return "استخدم زر المشاركة الموجود في الموقع. وظيفة المشاركة نفسها موجودة في script.js، وأنا مش بغيّرها من كود الدردشة ده.";
+      }
+
+      if (
+        text.includes("حفظ") ||
+        text.includes("بتتخزن") ||
+        text.includes("الطلبات")
+      ) {
+        return "الموقع بيستخدم التخزين المحلي في المتصفح لحفظ الطلبات على نفس الجهاز والمتصفح. مسح بيانات المتصفح ممكن يمسح البيانات المحفوظة.";
+      }
+
+      if (
+        text.includes("ليلي") ||
+        text.includes("الوضع الليلي") ||
+        text.includes("الظلام")
+      ) {
+        return "تقدر تستخدم زر الوضع الليلي الموجود أعلى الموقع لتغيير المظهر.";
+      }
+
+      if (
+        text.includes("كارفور") ||
+        text.includes("الاسعار") ||
+        text.includes("الأسعار")
+      ) {
+        return "أقدر أبحث في الأسعار الموجودة في ملف prices.json فقط. الأسعار دي مش تحديث مباشر من كارفور، فلازم تتراجع قبل الشراء.";
+      }
+
+      const priceReply = await searchPrice(message);
+      if (priceReply) return priceReply;
+
+      return "أقدر أساعدك في البحث عن منتج داخل قائمة الأسعار، أو أوضح لك استخدام الموقع. جرّب مثلًا: سعر السكر، إزاي أحفظ الطلبات، أو إزاي أشارك الطلب.";
+    }
+
+    chatForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      addMessage(message, "user");
+      chatInput.value = "";
+      chatInput.disabled = true;
+
+      try {
+        const reply = await getReply(message);
+        addMessage(reply, "bot");
+      } catch (error) {
+        console.error("Chatbot error:", error);
+        addMessage(
+          "حصلت مشكلة بسيطة. جرّب تاني بعد شوية.",
+          "bot"
+        );
+      } finally {
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
     });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initChatbot);
+  } else {
+    initChatbot();
+  }
 })();
