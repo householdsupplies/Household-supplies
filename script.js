@@ -3,10 +3,12 @@ const itemsBox = document.getElementById('items');
 const STORAGE_KEY = 'household-orders';
 
 /* =========================
-   إدارة صفوف الطلبات
+   إنشاء صفوف الطلبات
 ========================= */
 
 function addRow() {
+  if (!itemsBox) return;
+
   const row = document.createElement('div');
   row.className = 'row';
 
@@ -28,12 +30,17 @@ function addRow() {
 }
 
 function renumber() {
+  if (!itemsBox) return;
+
   [...itemsBox.querySelectorAll('.row')].forEach((row, index) => {
-    row.querySelector('.number').textContent = index + 1;
+    const number = row.querySelector('.number');
+    if (number) number.textContent = index + 1;
   });
 }
 
 function ensureLastRow() {
+  if (!itemsBox) return;
+
   const rows = [...itemsBox.querySelectorAll('.row')];
   const last = rows[rows.length - 1];
 
@@ -49,10 +56,12 @@ function ensureLastRow() {
 }
 
 /* =========================
-   الحفظ والاسترجاع
+   حفظ الطلبات
 ========================= */
 
 function saveItems() {
+  if (!itemsBox) return;
+
   const savedRows = [...itemsBox.querySelectorAll('.row')]
     .map(row => ({
       name: row.querySelector('.item-name').value,
@@ -68,11 +77,17 @@ function saveItems() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(savedRows));
   } catch (error) {
-    console.error('تعذر حفظ القائمة على الجهاز:', error);
+    console.error('تعذر حفظ القائمة:', error);
   }
 }
 
+/* =========================
+   تحميل الطلبات المحفوظة
+========================= */
+
 function loadItems() {
+  if (!itemsBox) return;
+
   let savedRows = [];
 
   try {
@@ -85,7 +100,7 @@ function loadItems() {
     savedRows = [];
   }
 
-  if (savedRows.length) {
+  if (savedRows.length > 0) {
     savedRows.forEach(item => {
       addRow();
 
@@ -115,6 +130,8 @@ function loadItems() {
 ========================= */
 
 function getItems() {
+  if (!itemsBox) return [];
+
   return [...itemsBox.querySelectorAll('.row')]
     .map(row => {
       const quantityText =
@@ -136,6 +153,10 @@ function getItems() {
     );
 }
 
+/* =========================
+   حماية النصوص داخل HTML
+========================= */
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, ch => ({
     '&': '&amp;',
@@ -146,11 +167,19 @@ function escapeHtml(value) {
   }[ch]));
 }
 
+/* =========================
+   حساب الإجمالي
+========================= */
+
 function calculateTotal(items) {
   return items.reduce((sum, item) => {
     return sum + item.quantity * item.price;
   }, 0);
 }
+
+/* =========================
+   صفوف جدول التقرير
+========================= */
 
 function makeTableRows(items) {
   return items.map((item, index) => {
@@ -169,7 +198,7 @@ function makeTableRows(items) {
 }
 
 /* =========================
-   إنشاء تقرير HTML للطباعة
+   بناء التقرير
 ========================= */
 
 function createReportElement(items) {
@@ -189,40 +218,38 @@ function createReportElement(items) {
     'direction:rtl',
     'display:block',
     'visibility:visible',
-    'opacity:1'
+    'opacity:1',
+    'line-height:1.7'
   ].join(';');
 
   report.innerHTML =
-    '<h1 style="text-align:center;color:#e76f51;font-size:26px">' +
+    '<h1 style="text-align:center;color:#e76f51;font-size:26px;margin:0 0 20px">' +
       'قائمة طلبات البيت' +
     '</h1>' +
+
     '<p style="margin:20px 0;color:#333">' +
       'التاريخ: ' +
       escapeHtml(new Date().toLocaleDateString('ar-EG')) +
     '</p>' +
-    '<table style="width:100%;border-collapse:collapse;color:#222;font-size:13px">' +
+
+    '<table style="width:100%;border-collapse:collapse;table-layout:fixed;color:#222;font-size:13px">' +
       '<thead><tr>' +
-        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">رقم</th>' +
-        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">الطلب</th>' +
-        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">الكمية</th>' +
-        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">سعر الوحدة</th>' +
-        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">إجمالي الطلب</th>' +
+        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2;width:8%">رقم</th>' +
+        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2;width:34%">الطلب</th>' +
+        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2;width:15%">الكمية</th>' +
+        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2;width:20%">سعر الوحدة</th>' +
+        '<th style="border:1px solid #999;padding:10px;background:#f2f2f2;width:23%">إجمالي الطلب</th>' +
       '</tr></thead>' +
       '<tbody>' + makeTableRows(items) + '</tbody>' +
     '</table>' +
+
     '<div style="margin-top:20px;padding:14px;border:1px solid #999;font-size:19px;font-weight:bold;color:#222">' +
       'الإجمالي الكلي: ' + total.toFixed(2) + ' جنيه' +
     '</div>';
 
-  report.querySelectorAll('td').forEach(cell => {
+  report.querySelectorAll('td, th').forEach(cell => {
     cell.style.border = '1px solid #999';
     cell.style.padding = '10px';
-    cell.style.textAlign = 'right';
-    cell.style.verticalAlign = 'top';
-    cell.style.overflowWrap = 'anywhere';
-  });
-
-  report.querySelectorAll('th').forEach(cell => {
     cell.style.textAlign = 'right';
     cell.style.verticalAlign = 'top';
     cell.style.overflowWrap = 'anywhere';
@@ -232,23 +259,27 @@ function createReportElement(items) {
 }
 
 /* =========================
-   إنشاء PDF
+   إنشاء ملف PDF
 ========================= */
 
 async function generateOrdersPdf(items) {
-  if (typeof html2pdf === 'undefined') {
+  if (typeof html2pdf !== 'function') {
     throw new Error(
-      'مكتبة html2pdf غير محملة. راجع ملف HTML.'
+      'مكتبة html2pdf غير محملة. تأكد من اتصال الإنترنت.'
     );
+  }
+
+  if (!items || !items.length) {
+    throw new Error('لا توجد طلبات لإنشاء التقرير.');
   }
 
   const report = createReportElement(items);
 
   Object.assign(report.style, {
     position: 'fixed',
-    left: '-10000px',
+    left: '0',
     top: '0',
-    zIndex: '9999',
+    zIndex: '99999',
     pointerEvents: 'none'
   });
 
@@ -265,10 +296,12 @@ async function generateOrdersPdf(items) {
       .set({
         margin: [10, 10, 10, 10],
         filename: 'طلبات-البيت.pdf',
+
         image: {
           type: 'jpeg',
           quality: 0.98
         },
+
         html2canvas: {
           scale: 2,
           useCORS: true,
@@ -278,11 +311,13 @@ async function generateOrdersPdf(items) {
           scrollY: 0,
           windowWidth: 794
         },
+
         jsPDF: {
           unit: 'mm',
           format: 'a4',
           orientation: 'portrait'
         },
+
         pagebreak: {
           mode: ['css', 'legacy'],
           avoid: ['tr']
@@ -305,7 +340,7 @@ async function generateOrdersPdf(items) {
 }
 
 /* =========================
-   تنزيل PDF
+   تنزيل ملف PDF
 ========================= */
 
 function downloadPdfBlob(blob) {
@@ -320,10 +355,15 @@ function downloadPdfBlob(blob) {
   link.click();
   link.remove();
 
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 60000);
 }
 
-/* منع الضغط المتكرر على الأزرار */
+/* =========================
+   تشغيل أزرار PDF والمشاركة
+========================= */
+
 async function runPdfAction(button, action, loadingText) {
   if (!button || button.dataset.busy === 'true') return;
 
@@ -344,10 +384,10 @@ async function runPdfAction(button, action, loadingText) {
     const blob = await generateOrdersPdf(items);
     await action(blob);
   } catch (error) {
-    console.error('خطأ أثناء تجهيز PDF:', error);
+    console.error('خطأ PDF:', error);
 
     alert(
-      'تعذر تجهيز ملف PDF. تأكدي من اتصال الإنترنت وتحميل مكتبة PDF، ثم حاولي مرة أخرى.'
+      'تعذر إنشاء ملف PDF. حدّثي الصفحة وحاولي مرة أخرى، وإذا استمرت المشكلة راجعي Console.'
     );
   } finally {
     button.disabled = false;
@@ -357,7 +397,7 @@ async function runPdfAction(button, action, loadingText) {
 }
 
 /* =========================
-   زر إنشاء PDF
+   زر إنشاء وطباعة PDF
 ========================= */
 
 const createButton = document.getElementById('createButton');
@@ -375,7 +415,7 @@ if (createButton) {
 }
 
 /* =========================
-   زر مشاركة PDF
+   زر المشاركة
 ========================= */
 
 const shareButton = document.getElementById('shareButton');
@@ -409,10 +449,7 @@ if (shareButton) {
               return;
             }
 
-            console.warn(
-              'تعذرت المشاركة المباشرة:',
-              error
-            );
+            console.warn('تعذرت المشاركة المباشرة:', error);
           }
         }
 
@@ -428,7 +465,7 @@ if (shareButton) {
 }
 
 /* =========================
-   مسح الطلبات
+   زر مسح الطلبات
 ========================= */
 
 const clearButton =
@@ -444,7 +481,7 @@ if (clearButton) {
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch (error) {
-      console.error('تعذر مسح القائمة المحفوظة:', error);
+      console.error('تعذر مسح القائمة:', error);
     }
 
     itemsBox.innerHTML = '';
@@ -459,11 +496,11 @@ if (clearButton) {
 }
 
 /* =========================
-   بدء تشغيل القائمة
+   تشغيل الصفحة
 ========================= */
 
 if (itemsBox) {
   loadItems();
 } else {
-  console.error('لم يتم العثور على العنصر #items في HTML.');
+  console.error('لم يتم العثور على العنصر #items.');
 }
