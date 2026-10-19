@@ -17,23 +17,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <meta name="theme-color" content="#fff5e9">
+  <meta name="description" content="طلبات البيت - نظّم طلبات المنزل والكميات والأسعار بسهولة.">
+
   <title>طلبات البيت</title>
 
+  <!-- الخط العربي الجديد -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- ملفات التصميم -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="chatbot.css">
 
+  <!-- تنسيقات الترحيب -->
   <style>
-    /* ترحيب الزائر - لا يغير تصميم الطلبات */
     #welcomeBar {
       display: none;
+      width: min(720px, 100%);
       margin: 0 auto 14px;
       padding: 12px 16px;
       border-radius: 12px;
       background: #edf7ef;
       border: 1px solid #d3e9d7;
       color: #245b35;
+      font-family: "Cairo", Tahoma, Arial, sans-serif;
       font-size: 15px;
-      line-height: 1.7;
+      line-height: 1.8;
       text-align: right;
       overflow-wrap: anywhere;
     }
@@ -42,13 +53,49 @@
       display: block;
     }
 
+    /* شريط زر الوضع الليلي */
+    .topbar {
+      width: min(720px, 100%);
+      margin: 0 auto 14px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    #themeToggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: auto;
+      margin: 0;
+      padding: 10px 16px;
+      color: var(--page-text, #3b3541);
+      background: var(--card-bg, #fff);
+      border: 1px solid var(--card-border, #eee);
+      border-radius: 12px;
+      box-shadow: 0 4px 14px var(--card-shadow, #00000012);
+      font-family: "Cairo", Tahoma, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #themeToggle::before {
+      content: none !important;
+    }
+
+    #themeToggle:hover {
+      transform: translateY(-1px);
+    }
+
+    /* نافذة إدخال الاسم */
     #nameModal {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 99999;
       padding: 18px;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.58);
       align-items: center;
       justify-content: center;
     }
@@ -67,30 +114,35 @@
       color: #222;
       text-align: right;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-      font-family: inherit;
+      font-family: "Cairo", Tahoma, Arial, sans-serif;
     }
 
     .welcome-card h2 {
       margin: 0 0 10px;
+      color: #287844;
       font-size: 22px;
+      font-weight: 800;
     }
 
     .welcome-card p {
       margin: 0 0 18px;
       color: #666;
-      line-height: 1.8;
+      line-height: 1.9;
       font-size: 14px;
     }
 
     #visitorName {
+      display: block;
       width: 100%;
       box-sizing: border-box;
+      margin: 8px 0 12px;
       padding: 12px;
+      color: #333;
+      background: #fff;
       border: 1px solid #ddd;
       border-radius: 9px;
-      font: inherit;
+      font-family: "Cairo", Tahoma, Arial, sans-serif;
       font-size: 16px;
-      margin-bottom: 12px;
     }
 
     #saveVisitorName {
@@ -100,9 +152,14 @@
       border-radius: 9px;
       background: #287844;
       color: white;
-      font: inherit;
+      font-family: "Cairo", Tahoma, Arial, sans-serif;
       font-size: 16px;
+      font-weight: 700;
       cursor: pointer;
+    }
+
+    #saveVisitorName::before {
+      content: none;
     }
 
     #saveVisitorName:disabled {
@@ -126,14 +183,51 @@
       .welcome-card {
         padding: 20px;
       }
+
+      #themeToggle {
+        padding: 9px 13px;
+        font-size: 13px;
+      }
+    }
+
+    @media print {
+      .topbar,
+      #welcomeBar,
+      #nameModal {
+        display: none !important;
+      }
     }
   </style>
+
+  <!-- استعادة الوضع المحفوظ قبل ظهور الصفحة -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('householdSuppliesTheme') === 'dark') {
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
 
   <!-- تحية الزائر -->
   <div id="welcomeBar" role="status" aria-live="polite"></div>
+
+  <!-- زر الوضع الليلي والنهاري -->
+  <div class="topbar">
+    <button
+      id="themeToggle"
+      type="button"
+      aria-label="تغيير مظهر الموقع"
+      aria-pressed="false"
+    >
+      <span id="themeIcon" aria-hidden="true">🌙</span>
+      <span id="themeLabel">الوضع الليلي</span>
+    </button>
+  </div>
 
   <!-- نافذة طلب الاسم -->
   <div
@@ -164,6 +258,7 @@
     </form>
   </div>
 
+  <!-- محتوى الموقع الأصلي -->
   <main class="container">
     <h1>طلبات البيت</h1>
     <p class="subtitle">اكتبي الطلب والكمية وسعر الوحدة. يظهر سطر جديد تلقائيًا.</p>
@@ -184,7 +279,7 @@
     </div>
   </main>
 
-  <!-- ملفات JavaScript الأصلية -->
+  <!-- المكتبات والملفات الأصلية: بدون تغيير -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="script.js"></script>
   <script src="prices.js"></script>
@@ -202,7 +297,8 @@
       const saveButton = document.getElementById('saveVisitorName');
 
       function showWelcome(name) {
-        welcomeBar.textContent = 'أهلًا بيك يا ' + name + ' ❤️ نورت طلبات البيت!';
+        welcomeBar.textContent =
+          'أهلًا بيك يا ' + name + ' ❤️ نورت طلبات البيت!';
         welcomeBar.classList.add('visible');
         modal.classList.remove('visible');
       }
@@ -219,7 +315,6 @@
           }, 100);
         }
       } catch (e) {
-        // لو التخزين غير متاح، يظل بإمكان الزائر إدخال اسمه.
         modal.classList.add('visible');
       }
 
@@ -241,11 +336,56 @@
         try {
           localStorage.setItem(STORAGE_KEY, name);
         } catch (e) {
-          // نعرض التحية في الزيارة الحالية حتى لو تعذر الحفظ.
+          // تستمر التحية في الظهور خلال الزيارة الحالية.
         }
 
         showWelcome(name);
         saveButton.disabled = false;
+      });
+    })();
+  </script>
+
+  <!-- تشغيل الوضع الليلي -->
+  <script>
+    (function () {
+      const KEY = 'householdSuppliesTheme';
+      const toggle = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+
+      function applyTheme(theme) {
+        const isDark = theme === 'dark';
+
+        document.documentElement.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('dark-mode', isDark);
+
+        icon.textContent = isDark ? '☀️' : '🌙';
+        label.textContent = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
+
+        toggle.setAttribute('aria-pressed', String(isDark));
+
+        document.querySelector('meta[name="theme-color"]')
+          .setAttribute('content', isDark ? '#111722' : '#fff5e9');
+      }
+
+      let savedTheme = 'light';
+
+      try {
+        savedTheme = localStorage.getItem(KEY) || 'light';
+      } catch (e) {}
+
+      applyTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+      toggle.addEventListener('click', function () {
+        const nextTheme = document.body.classList.contains('dark-mode')
+          ? 'light'
+          : 'dark';
+
+        applyTheme(nextTheme);
+
+        try {
+          localStorage.setItem(KEY, nextTheme);
+        } catch (e) {}
       });
     })();
   </script>
