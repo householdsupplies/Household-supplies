@@ -61,7 +61,7 @@ body {
   margin: 0;
   padding: 24px 16px 42px;
   color: var(--page-text);
-  font-family: "Cairo", Tahoma, Arial, sans-serif;
+  font-family: "Cairo", Arial, sans-serif;
   background: var(--page-bg);
   background-attachment: fixed;
   transition: color .2s, background .2s;
