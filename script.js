@@ -91,12 +91,15 @@ function loadItems() {
   let savedRows = [];
 
   try {
-    savedRows = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    savedRows = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || '[]'
+    );
 
     if (!Array.isArray(savedRows)) {
       savedRows = [];
     }
   } catch (error) {
+    console.error('تعذر قراءة الطلبات المحفوظة:', error);
     savedRows = [];
   }
 
@@ -172,13 +175,14 @@ function escapeHtml(value) {
 ========================= */
 
 function calculateTotal(items) {
-  return items.reduce((sum, item) => {
-    return sum + item.quantity * item.price;
-  }, 0);
+  return items.reduce(
+    (sum, item) => sum + item.quantity * item.price,
+    0
+  );
 }
 
 /* =========================
-   صفوف جدول التقرير
+   إنشاء صفوف جدول التقرير
 ========================= */
 
 function makeTableRows(items) {
@@ -198,7 +202,7 @@ function makeTableRows(items) {
 }
 
 /* =========================
-   بناء التقرير
+   بناء تقرير PDF
 ========================= */
 
 function createReportElement(items) {
@@ -219,7 +223,8 @@ function createReportElement(items) {
     'display:block',
     'visibility:visible',
     'opacity:1',
-    'line-height:1.7'
+    'line-height:1.7',
+    'margin:0'
   ].join(';');
 
   report.innerHTML =
@@ -247,25 +252,18 @@ function createReportElement(items) {
       'الإجمالي الكلي: ' + total.toFixed(2) + ' جنيه' +
     '</div>';
 
-  report.querySelectorAll('td, th').forEach(cell => {
-    cell.style.border = '1px solid #999';
-    cell.style.padding = '10px';
-    cell.style.textAlign = 'right';
-    cell.style.verticalAlign = 'top';
-    cell.style.overflowWrap = 'anywhere';
-  });
-
   return report;
 }
 
 /* =========================
-   إنشاء ملف PDF
+   إنشاء PDF بالطريقة الصحيحة
 ========================= */
 
-
 async function generateOrdersPdf(items) {
-  if (typeof html2pdf !== 'function') {
-    throw new Error('مكتبة PDF غير محملة.');
+  if (typeof window.html2pdf !== 'function') {
+    throw new Error(
+      'مكتبة PDF غير محملة. تأكد من تحميل html2pdf.bundle.min.js قبل script.js.'
+    );
   }
 
   if (!Array.isArray(items) || items.length === 0) {
@@ -274,122 +272,19 @@ async function generateOrdersPdf(items) {
 
   const report = createReportElement(items);
 
-  // وضع التقرير داخل الصفحة بدون إخفائه أو وضعه خلف العناصر.
+  // نضع التقرير في مساحة مرئية حتى تستطيع المكتبة تصويره.
+  // تتم إزالة التقرير بعد انتهاء التصدير.
   Object.assign(report.style, {
-    position: 'relative',
-    left: 'auto',
-    top: 'auto',
-    zIndex: 'auto',
-    display: 'block',
-    visibility: 'visible',
-    opacity: '1',
-    width: '720px',
-    minHeight: '100px',
-    margin: '0',
-    background: '#ffffff',
-    color: '#222222',
-    pointerEvents: 'auto'
-  });
-
-  // حاوية مؤقتة خارج مساحة العرض، لكنها قابلة للتصوير.
-  const holder = document.createElement('div');
-  Object.assign(holder.style, {
     position: 'fixed',
-    left: '-10000px',
+    left: '0',
     top: '0',
-    width: '740px',
-    background: '#ffffff',
+    zIndex: '2147483647',
+    width: '720px',
+    maxWidth: 'none',
+    height: 'auto',
     overflow: 'visible',
-    zIndex: '-1'
+    pointerEvents: 'none'
   });
-
-  holder.appendChild(report);
-  document.body.appendChild(holder);
-
-  try {
-    await new Promise(resolve => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(resolve);
-      });
-    });
-
-    const canvas = await html2canvas(report, {
-      scale: 2,
-      backgroundColor: '#ffffff',
-      logging: true,
-      useCORS: true,
-      width: report.scrollWidth,
-      height: report.scrollHeight,
-      windowWidth: 1200,
-      scrollX: 0,
-      scrollY: 0
-    });
-
-    if (!canvas.width || !canvas.height) {
-      throw new Error('فشل تصوير التقرير.');
-    }
-
-    const ctx = canvas.getContext('2d');
-    const pixels = ctx.getImageData(
-      0, 0,
-      Math.min(canvas.width, 20),
-      Math.min(canvas.height, 20)
-    ).data;
-
-    if (!pixels || pixels.length === 0) {
-      throw new Error('تعذر قراءة صورة التقرير.');
-    }
-
-    const { jsPDF } = window.jspdf || {};
-
-    if (typeof jsPDF !== 'function') {
-      throw new Error('مكتبة jsPDF غير متاحة.');
-    }
-
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    });
-
-    const image = canvas.toDataURL('image/jpeg', 0.98);
-    const pageWidth = 190;
-    const pageHeight = canvas.height * pageWidth / canvas.width;
-    const printableHeight = 277;
-
-    let remaining = pageHeight;
-    let position = 10;
-
-    pdf.addImage(
-      image, 'JPEG',
-      10, position,
-      pageWidth, pageHeight
-    );
-
-    remaining -= printableHeight;
-
-    while (remaining > 0) {
-      pdf.addPage();
-      position = 10 - (pageHeight - remaining);
-      pdf.addImage(
-        image, 'JPEG',
-        10, position,
-        pageWidth, pageHeight
-      );
-      remaining -= printableHeight;
-    }
-
-    const blob = pdf.output('blob');
-
-    if (!blob || blob.size < 1000) {
-      throw new Error('ملف PDF الناتج فارغ أو صغير بشكل غير متوقع.');
-    }
-
-    return blob;
-  } finally {
-    holder.remove();
-  }
-}
 
   document.body.appendChild(report);
 
@@ -400,7 +295,7 @@ async function generateOrdersPdf(items) {
       });
     });
 
-    const worker = html2pdf()
+    const worker = window.html2pdf()
       .set({
         margin: [10, 10, 10, 10],
         filename: 'طلبات-البيت.pdf',
@@ -414,7 +309,7 @@ async function generateOrdersPdf(items) {
           scale: 2,
           useCORS: true,
           backgroundColor: '#ffffff',
-          logging: false,
+          logging: true,
           scrollX: 0,
           scrollY: 0,
           windowWidth: 794
@@ -437,8 +332,8 @@ async function generateOrdersPdf(items) {
     const pdf = await worker.get('pdf');
     const blob = pdf.output('blob');
 
-    if (!blob || blob.size < 100) {
-      throw new Error('ملف PDF فارغ.');
+    if (!blob || blob.size < 1000) {
+      throw new Error('ملف PDF فارغ أو لم يتم إنشاؤه بصورة صحيحة.');
     }
 
     return blob;
@@ -448,7 +343,7 @@ async function generateOrdersPdf(items) {
 }
 
 /* =========================
-   تنزيل ملف PDF
+   تنزيل PDF
 ========================= */
 
 function downloadPdfBlob(blob) {
@@ -463,13 +358,11 @@ function downloadPdfBlob(blob) {
   link.click();
   link.remove();
 
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 60000);
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
 /* =========================
-   تشغيل أزرار PDF والمشاركة
+   تشغيل إجراءات PDF
 ========================= */
 
 async function runPdfAction(button, action, loadingText) {
@@ -492,10 +385,10 @@ async function runPdfAction(button, action, loadingText) {
     const blob = await generateOrdersPdf(items);
     await action(blob);
   } catch (error) {
-    console.error('خطأ PDF:', error);
+    console.error('خطأ إنشاء PDF:', error);
 
     alert(
-      'تعذر إنشاء ملف PDF. حدّثي الصفحة وحاولي مرة أخرى، وإذا استمرت المشكلة راجعي Console.'
+      'تعذر إنشاء PDF. افتح Console باستخدام F12 وأرسل لي الخطأ الأحمر.'
     );
   } finally {
     button.disabled = false;
@@ -505,7 +398,7 @@ async function runPdfAction(button, action, loadingText) {
 }
 
 /* =========================
-   زر إنشاء وطباعة PDF
+   زر إنشاء PDF
 ========================= */
 
 const createButton = document.getElementById('createButton');
@@ -553,9 +446,7 @@ if (shareButton) {
 
             return;
           } catch (error) {
-            if (error.name === 'AbortError') {
-              return;
-            }
+            if (error.name === 'AbortError') return;
 
             console.warn('تعذرت المشاركة المباشرة:', error);
           }
@@ -564,7 +455,7 @@ if (shareButton) {
         downloadPdfBlob(blob);
 
         alert(
-          'تم تنزيل ملف PDF. افتحي واتساب وأرفقي الملف من مجلد التنزيلات.'
+          'تم تنزيل ملف PDF. افتح واتساب وأرفق الملف من مجلد التنزيلات.'
         );
       },
       'جارٍ تجهيز PDF...'
@@ -582,7 +473,7 @@ const clearButton =
 
 if (clearButton) {
   clearButton.addEventListener('click', () => {
-    if (!confirm('هل تريدين مسح كل الطلبات المحفوظة؟')) {
+    if (!confirm('هل تريد مسح كل الطلبات المحفوظة؟')) {
       return;
     }
 
@@ -592,14 +483,16 @@ if (clearButton) {
       console.error('تعذر مسح القائمة:', error);
     }
 
-    itemsBox.innerHTML = '';
+    if (itemsBox) {
+      itemsBox.innerHTML = '';
 
-    for (let i = 0; i < 5; i++) {
-      addRow();
+      for (let i = 0; i < 5; i++) {
+        addRow();
+      }
+
+      saveItems();
+      renumber();
     }
-
-    saveItems();
-    renumber();
   });
 }
 
