@@ -5,25 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>طلبات البيت</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="chatbot.css">
 
   <!-- مكتبة إنشاء PDF للمشاركة -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="chatbot.js"></script>
 </head>
 <body>
-  <div class="topbar">
-    <button id="themeToggle" type="button" aria-pressed="false">🌙 الوضع الليلي</button>
+ <div class="topbar">
+  <button id="chatToggle" class="chat-toggle" type="button"
+          aria-expanded="false" aria-controls="chatPanel">
+    🤖 دردشة المساعد
+  </button>
+
+  <button id="themeToggle" type="button" aria-pressed="false">
+    🌙 الوضع الليلي
+  </button>
+</div>
+
+<div id="welcomeBar" class="welcome-bar" hidden></div>
+
+<section id="chatPanel" class="chat-panel" aria-label="مساعد طلبات البيت" hidden>
+  <div class="chat-header">
+    <div>
+      <strong>🤖 مساعد طلبات البيت</strong>
+      <small>اسألني عن الموقع والأسعار</small>
+    </div>
+    <button id="chatClose" class="chat-close" type="button">×</button>
   </div>
 
-  <main class="container">
-    <h1>طلبات البيت</h1>
-    <p class="subtitle">اكتبي الطلب والكمية وسعر الوحدة. يتم حفظ القائمة على هذا الجهاز تلقائيًا.</p>
-
-    <div class="heading">
-      <span>رقم</span>
-      <span>الطلب</span>
-      <span>الكمية</span>
-      <span>سعر الوحدة</span>
+  <div id="chatMessages" class="chat-messages" aria-live="polite">
+    <div class="chat-message bot-message">
+      أهلًا بيك! 😊 اكتب اسم منتج للبحث في الأسعار أو اسألني عن استخدام الموقع.
     </div>
+  </div>
+
+  <form id="chatForm" class="chat-form">
+    <input id="chatInput" type="text" placeholder="اكتب رسالتك هنا..." required>
+    <button type="submit">إرسال</button>
+  </form>
+</section>
 
     <div id="items"></div>
 
