@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
 }
@@ -242,7 +241,7 @@ button:focus-visible {
 }
 
 .clear-button {
-  background: var(--clear-bg);
+  background: #777;
   box-shadow: 0 8px 18px #7773;
 }
 
@@ -367,14 +366,6 @@ body .container *,
 body .topbar,
 body #welcomeBar {
   font-family: "Cairo", Tahoma, Arial, sans-serif !important;
-}
-.clear-button {
-  background: #777;
-  box-shadow: 0 8px 18px #7773;
-}
-
-.clear-button::before {
-  content: "🗑️ ";
 }
 
 @media (prefers-reduced-motion: reduce) {
