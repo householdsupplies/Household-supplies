@@ -355,6 +355,21 @@ button:focus-visible {
   }
 }
 
+/* فرض خط Cairo على عناصر الموقع */
+html,
+body,
+body button,
+body input,
+body textarea,
+body select,
+body .container,
+body .container *,
+body .topbar,
+body #welcomeBar {
+  font-family: "Cairo", Tahoma, Arial, sans-serif !important;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
