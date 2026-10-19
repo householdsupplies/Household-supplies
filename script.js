@@ -43,7 +43,7 @@ function ensureLastRow() {
 }
 
 function saveItems() {
-  const savedRows = [...itemsBox.querySelectorAll('.row')]
+  const rows = [...itemsBox.querySelectorAll('.row')]
     .map(row => ({
       name: row.querySelector('.item-name').value,
       quantity: row.querySelector('.item-quantity').value,
@@ -54,9 +54,9 @@ function saveItems() {
     );
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedRows));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
   } catch (error) {
-    console.error('تعذر حفظ القائمة على الجهاز:', error);
+    console.error('تعذر حفظ القائمة:', error);
   }
 }
 
@@ -65,15 +65,12 @@ function loadItems() {
 
   try {
     savedRows = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-
-    if (!Array.isArray(savedRows)) {
-      savedRows = [];
-    }
+    if (!Array.isArray(savedRows)) savedRows = [];
   } catch (error) {
     savedRows = [];
   }
 
-  if (savedRows.length > 0) {
+  if (savedRows.length) {
     savedRows.forEach(item => {
       addRow();
 
@@ -82,18 +79,13 @@ function loadItems() {
       row.querySelector('.item-quantity').value = item.quantity || '';
       row.querySelector('.item-price').value = item.price || '';
     });
+  }
 
-    // إضافة سطر فارغ جديد بعد الطلبات المحفوظة
+  // إضافة سطر فارغ، وإظهار خمسة أسطر على الأقل
+  addRow();
+
+  while (itemsBox.querySelectorAll('.row').length < 5) {
     addRow();
-
-    // الحفاظ على خمسة أسطر على الأقل
-    while (itemsBox.querySelectorAll('.row').length < 5) {
-      addRow();
-    }
-  } else {
-    for (let i = 0; i < 5; i++) {
-      addRow();
-    }
   }
 
   renumber();
@@ -117,19 +109,17 @@ function getItems() {
 }
 
 function escapeHtml(value) {
-  return value.replace(/[&<>"']/g, ch => ({
+  return value.replace(/[&<>"']/g, character => ({
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
     "'": '&#39;'
-  }[ch]));
+  }[character]));
 }
 
 function calculateTotal(items) {
-  return items.reduce((sum, item) => {
-    return sum + item.quantity * item.price;
-  }, 0);
+  return items.reduce((sum, item) => sum + item.quantity * item.price, 0);
 }
 
 function makeTableRows(items) {
@@ -148,7 +138,7 @@ function makeTableRows(items) {
   }).join('');
 }
 
-// إنشاء القائمة للطباعة أو الحفظ كـ PDF
+// إنشاء القائمة وفتح نافذة الطباعة أو الحفظ PDF
 document.getElementById('createButton').addEventListener('click', () => {
   const items = getItems();
 
@@ -162,7 +152,7 @@ document.getElementById('createButton').addEventListener('click', () => {
   const win = window.open('', '_blank');
 
   if (!win) {
-    alert('اسمحي بالنوافذ المنبثقة لهذا الموقع ثم اضغطي إنشاء مرة أخرى.');
+    alert('اسمحي بالنوافذ المنبثقة لهذا الموقع ثم اضغطي مرة أخرى.');
     return;
   }
 
@@ -187,11 +177,8 @@ document.getElementById('createButton').addEventListener('click', () => {
       '<p>التاريخ: ' + new Date().toLocaleDateString('ar-EG') + '</p>' +
       '<table>' +
         '<thead><tr>' +
-          '<th>رقم</th>' +
-          '<th>الطلب</th>' +
-          '<th>الكمية</th>' +
-          '<th>سعر الوحدة</th>' +
-          '<th>إجمالي الطلب</th>' +
+          '<th>رقم</th><th>الطلب</th><th>الكمية</th>' +
+          '<th>سعر الوحدة</th><th>إجمالي الطلب</th>' +
         '</tr></thead>' +
         '<tbody>' + tableRows + '</tbody>' +
       '</table>' +
@@ -201,14 +188,13 @@ document.getElementById('createButton').addEventListener('click', () => {
   );
 
   win.document.close();
-
   setTimeout(() => {
     win.focus();
     win.print();
   }, 500);
 });
 
-// تنزيل ملف PDF أو مشاركته على واتساب
+// إنشاء ملف PDF ومشاركته أو تنزيله
 document.getElementById('shareButton').addEventListener('click', async () => {
   const items = getItems();
 
@@ -218,7 +204,7 @@ document.getElementById('shareButton').addEventListener('click', async () => {
   }
 
   if (typeof html2pdf === 'undefined') {
-    alert('مكتبة PDF لم تحمل. تأكدي من إضافة سطر المكتبة في index.html.');
+    alert('مكتبة PDF لم تحمل. تأكدي من اتصال الإنترنت.');
     return;
   }
 
@@ -233,29 +219,21 @@ document.getElementById('shareButton').addEventListener('click', async () => {
     'font-family:Tahoma,Arial,sans-serif;direction:rtl;';
 
   pdfElement.innerHTML =
-    '<h1 style="text-align:center;color:#222">قائمة طلبات البيت</h1>' +
-    '<p style="color:#222">التاريخ: ' +
-      new Date().toLocaleDateString('ar-EG') +
-    '</p>' +
-    '<table style="width:100%;border-collapse:collapse;color:#222">' +
+    '<h1 style="text-align:center">قائمة طلبات البيت</h1>' +
+    '<p>التاريخ: ' + new Date().toLocaleDateString('ar-EG') + '</p>' +
+    '<table style="width:100%;border-collapse:collapse">' +
       '<thead><tr>' +
-        '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">رقم</th>' +
-        '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">الطلب</th>' +
-        '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">الكمية</th>' +
-        '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">سعر الوحدة</th>' +
-        '<th style="border:1px solid #999;padding:12px;text-align:right;background:#f2f2f2">إجمالي الطلب</th>' +
+        '<th>رقم</th><th>الطلب</th><th>الكمية</th>' +
+        '<th>سعر الوحدة</th><th>إجمالي الطلب</th>' +
       '</tr></thead>' +
       '<tbody>' + tableRows + '</tbody>' +
     '</table>' +
-    '<div style="margin-top:20px;padding:12px;border:1px solid #999;font-size:20px;font-weight:bold;color:#222">' +
-      'الإجمالي الكلي: ' + total.toFixed(2) +
-    '</div>';
+    '<h3>الإجمالي الكلي: ' + total.toFixed(2) + '</h3>';
 
-  pdfElement.querySelectorAll('td').forEach(cell => {
+  pdfElement.querySelectorAll('th, td').forEach(cell => {
     cell.style.border = '1px solid #999';
     cell.style.padding = '12px';
     cell.style.textAlign = 'right';
-    cell.style.color = '#222';
   });
 
   document.body.appendChild(pdfElement);
@@ -271,7 +249,6 @@ document.getElementById('shareButton').addEventListener('click', async () => {
         html2canvas: {
           scale: 2,
           useCORS: true,
-          windowWidth: 794,
           backgroundColor: '#ffffff'
         },
         jsPDF: {
@@ -311,9 +288,7 @@ document.getElementById('shareButton').addEventListener('click', async () => {
       });
       return;
     } catch (error) {
-      if (error.name === 'AbortError') {
-        return;
-      }
+      if (error.name === 'AbortError') return;
     }
   }
 
@@ -327,19 +302,17 @@ document.getElementById('shareButton').addEventListener('click', async () => {
   downloadLink.remove();
 
   setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-
-  alert('تم تنزيل ملف PDF. افتحي واتساب وأرفقي الملف من التنزيلات.');
+  alert('تم تنزيل PDF. افتحي واتساب وأرفقي الملف من التنزيلات.');
 });
 
-// زر مسح الكل، إذا كان موجودًا في index.html
+// زر مسح القائمة إذا كان موجودًا في index.html
 const clearButton =
   document.getElementById('clearButton') ||
   document.getElementById('clearAllButton');
 
 if (clearButton) {
   clearButton.addEventListener('click', () => {
-    const shouldClear = confirm('هل تريدين مسح كل الطلبات المحفوظة؟');
-    if (!shouldClear) return;
+    if (!confirm('هل تريدين مسح كل الطلبات المحفوظة؟')) return;
 
     localStorage.removeItem(STORAGE_KEY);
     itemsBox.innerHTML = '';
@@ -352,5 +325,5 @@ if (clearButton) {
   });
 }
 
-// استرجاع القائمة المحفوظة عند فتح الصفحة
+// استرجاع القائمة عند فتح الموقع
 loadItems();
