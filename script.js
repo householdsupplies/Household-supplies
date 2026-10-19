@@ -223,12 +223,17 @@ async function generateOrdersPdf(items) {
 
   const report = createReportElement(items);
 
-  report.style.width = '720px';
-  report.style.position = 'fixed';
-  report.style.left = '-10000px';
-  report.style.top = '0';
+ report.style.width = '720px';
+report.style.position = 'absolute';
+report.style.left = '0';
+report.style.top = '0';
+report.style.zIndex = '-1';
+report.style.pointerEvents = 'none';
 
-  document.body.appendChild(report);
+document.body.appendChild(report);
+  await new Promise(resolve => requestAnimationFrame(() => {
+  requestAnimationFrame(resolve);
+}));
 
   try {
     const blob = await html2pdf()
