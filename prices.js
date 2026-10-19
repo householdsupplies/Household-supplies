@@ -5,8 +5,9 @@
     const response = await fetch("./prices.json", { cache: "no-store" });
     if (!response.ok) throw new Error("ملف الأسعار غير موجود");
     products = await response.json();
+    if (!Array.isArray(products)) throw new Error("صيغة ملف الأسعار غير صحيحة");
   } catch (error) {
-    console.log("الأسعار لم تُربط بعد.");
+    console.log("الأسعار لم تُربط بعد.", error);
     return;
   }
 
@@ -43,6 +44,9 @@
     if (!row || !product) return;
 
     const priceInput = row.querySelector(".item-price");
-    if (priceInput) priceInput.value = product.price;
+    if (priceInput) {
+      priceInput.value = product.price;
+      priceInput.dispatchEvent(new Event("input", { bubbles: true }));
+    }
   });
 })();
