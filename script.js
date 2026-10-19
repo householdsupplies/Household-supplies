@@ -262,26 +262,134 @@ function createReportElement(items) {
    إنشاء ملف PDF
 ========================= */
 
+
 async function generateOrdersPdf(items) {
   if (typeof html2pdf !== 'function') {
-    throw new Error(
-      'مكتبة html2pdf غير محملة. تأكد من اتصال الإنترنت.'
-    );
+    throw new Error('مكتبة PDF غير محملة.');
   }
 
-  if (!items || !items.length) {
+  if (!Array.isArray(items) || items.length === 0) {
     throw new Error('لا توجد طلبات لإنشاء التقرير.');
   }
 
   const report = createReportElement(items);
 
+  // وضع التقرير داخل الصفحة بدون إخفائه أو وضعه خلف العناصر.
   Object.assign(report.style, {
-    position: 'fixed',
-    left: '0',
-    top: '0',
-    zIndex: '99999',
-    pointerEvents: 'none'
+    position: 'relative',
+    left: 'auto',
+    top: 'auto',
+    zIndex: 'auto',
+    display: 'block',
+    visibility: 'visible',
+    opacity: '1',
+    width: '720px',
+    minHeight: '100px',
+    margin: '0',
+    background: '#ffffff',
+    color: '#222222',
+    pointerEvents: 'auto'
   });
+
+  // حاوية مؤقتة خارج مساحة العرض، لكنها قابلة للتصوير.
+  const holder = document.createElement('div');
+  Object.assign(holder.style, {
+    position: 'fixed',
+    left: '-10000px',
+    top: '0',
+    width: '740px',
+    background: '#ffffff',
+    overflow: 'visible',
+    zIndex: '-1'
+  });
+
+  holder.appendChild(report);
+  document.body.appendChild(holder);
+
+  try {
+    await new Promise(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
+
+    const canvas = await html2canvas(report, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      logging: true,
+      useCORS: true,
+      width: report.scrollWidth,
+      height: report.scrollHeight,
+      windowWidth: 1200,
+      scrollX: 0,
+      scrollY: 0
+    });
+
+    if (!canvas.width || !canvas.height) {
+      throw new Error('فشل تصوير التقرير.');
+    }
+
+    const ctx = canvas.getContext('2d');
+    const pixels = ctx.getImageData(
+      0, 0,
+      Math.min(canvas.width, 20),
+      Math.min(canvas.height, 20)
+    ).data;
+
+    if (!pixels || pixels.length === 0) {
+      throw new Error('تعذر قراءة صورة التقرير.');
+    }
+
+    const { jsPDF } = window.jspdf || {};
+
+    if (typeof jsPDF !== 'function') {
+      throw new Error('مكتبة jsPDF غير متاحة.');
+    }
+
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const image = canvas.toDataURL('image/jpeg', 0.98);
+    const pageWidth = 190;
+    const pageHeight = canvas.height * pageWidth / canvas.width;
+    const printableHeight = 277;
+
+    let remaining = pageHeight;
+    let position = 10;
+
+    pdf.addImage(
+      image, 'JPEG',
+      10, position,
+      pageWidth, pageHeight
+    );
+
+    remaining -= printableHeight;
+
+    while (remaining > 0) {
+      pdf.addPage();
+      position = 10 - (pageHeight - remaining);
+      pdf.addImage(
+        image, 'JPEG',
+        10, position,
+        pageWidth, pageHeight
+      );
+      remaining -= printableHeight;
+    }
+
+    const blob = pdf.output('blob');
+
+    if (!blob || blob.size < 1000) {
+      throw new Error('ملف PDF الناتج فارغ أو صغير بشكل غير متوقع.');
+    }
+
+    return blob;
+  } finally {
+    holder.remove();
+  }
+}
 
   document.body.appendChild(report);
 
