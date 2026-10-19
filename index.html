@@ -10,6 +10,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
+  <div class="topbar">
+    <button id="themeToggle" type="button" aria-pressed="false">🌙 الوضع الليلي</button>
+  </div>
+
   <main class="container">
     <h1>طلبات البيت</h1>
     <p class="subtitle">اكتبي الطلب والكمية وسعر الوحدة. يتم حفظ القائمة على هذا الجهاز تلقائيًا.</p>
@@ -30,6 +34,8 @@
     </div>
   </main>
 
+  <!-- يجب تحميل الأسعار قبل كود الطلبات -->
+  <script src="prices.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
