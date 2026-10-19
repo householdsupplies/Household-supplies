@@ -2,6 +2,10 @@
 const itemsBox = document.getElementById('items');
 const STORAGE_KEY = 'household-orders';
 
+/* =========================
+   إدارة صفوف الطلبات
+========================= */
+
 function addRow() {
   const row = document.createElement('div');
   row.className = 'row';
@@ -44,6 +48,10 @@ function ensureLastRow() {
   }
 }
 
+/* =========================
+   الحفظ والاسترجاع
+========================= */
+
 function saveItems() {
   const savedRows = [...itemsBox.querySelectorAll('.row')]
     .map(row => ({
@@ -68,9 +76,7 @@ function loadItems() {
   let savedRows = [];
 
   try {
-    savedRows = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || '[]'
-    );
+    savedRows = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
     if (!Array.isArray(savedRows)) {
       savedRows = [];
@@ -79,11 +85,12 @@ function loadItems() {
     savedRows = [];
   }
 
-  if (savedRows.length > 0) {
+  if (savedRows.length) {
     savedRows.forEach(item => {
       addRow();
 
       const row = itemsBox.lastElementChild;
+
       row.querySelector('.item-name').value = item.name || '';
       row.querySelector('.item-quantity').value = item.quantity || '';
       row.querySelector('.item-price').value = item.price || '';
@@ -102,6 +109,10 @@ function loadItems() {
 
   renumber();
 }
+
+/* =========================
+   تجهيز بيانات القائمة
+========================= */
 
 function getItems() {
   return [...itemsBox.querySelectorAll('.row')]
@@ -157,10 +168,12 @@ function makeTableRows(items) {
   }).join('');
 }
 
-/* إنشاء مستند HTML كامل للقائمة */
+/* =========================
+   إنشاء تقرير HTML للطباعة
+========================= */
+
 function createReportElement(items) {
   const total = calculateTotal(items);
-  const tableRows = makeTableRows(items);
   const report = document.createElement('div');
 
   report.dir = 'rtl';
@@ -168,12 +181,15 @@ function createReportElement(items) {
 
   report.style.cssText = [
     'box-sizing:border-box',
-    'width:100%',
+    'width:720px',
     'padding:24px',
-    'background:#fff',
-    'color:#222',
+    'background:#ffffff',
+    'color:#222222',
     'font-family:Tahoma,Arial,sans-serif',
-    'direction:rtl'
+    'direction:rtl',
+    'display:block',
+    'visibility:visible',
+    'opacity:1'
   ].join(';');
 
   report.innerHTML =
@@ -192,7 +208,7 @@ function createReportElement(items) {
         '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">سعر الوحدة</th>' +
         '<th style="border:1px solid #999;padding:10px;background:#f2f2f2">إجمالي الطلب</th>' +
       '</tr></thead>' +
-      '<tbody>' + tableRows + '</tbody>' +
+      '<tbody>' + makeTableRows(items) + '</tbody>' +
     '</table>' +
     '<div style="margin-top:20px;padding:14px;border:1px solid #999;font-size:19px;font-weight:bold;color:#222">' +
       'الإجمالي الكلي: ' + total.toFixed(2) + ' جنيه' +
@@ -215,28 +231,37 @@ function createReportElement(items) {
   return report;
 }
 
-/* إنشاء ملف PDF فعلي */
+/* =========================
+   إنشاء PDF
+========================= */
+
 async function generateOrdersPdf(items) {
   if (typeof html2pdf === 'undefined') {
-    throw new Error('مكتبة PDF غير متاحة');
+    throw new Error(
+      'مكتبة html2pdf غير محملة. راجع ملف HTML.'
+    );
   }
 
   const report = createReportElement(items);
 
- report.style.width = '720px';
-report.style.position = 'absolute';
-report.style.left = '0';
-report.style.top = '0';
-report.style.zIndex = '-1';
-report.style.pointerEvents = 'none';
+  Object.assign(report.style, {
+    position: 'fixed',
+    left: '-10000px',
+    top: '0',
+    zIndex: '9999',
+    pointerEvents: 'none'
+  });
 
-document.body.appendChild(report);
-  await new Promise(resolve => requestAnimationFrame(() => {
-  requestAnimationFrame(resolve);
-}));
+  document.body.appendChild(report);
 
   try {
-    const blob = await html2pdf()
+    await new Promise(resolve => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
+
+    const worker = html2pdf()
       .set({
         margin: [10, 10, 10, 10],
         filename: 'طلبات-البيت.pdf',
@@ -248,6 +273,9 @@ document.body.appendChild(report);
           scale: 2,
           useCORS: true,
           backgroundColor: '#ffffff',
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
           windowWidth: 794
         },
         jsPDF: {
@@ -261,11 +289,13 @@ document.body.appendChild(report);
         }
       })
       .from(report)
-      .toPdf()
-      .output('blob');
+      .toPdf();
 
-    if (!blob || blob.size === 0) {
-      throw new Error('ملف PDF فارغ');
+    const pdf = await worker.get('pdf');
+    const blob = pdf.output('blob');
+
+    if (!blob || blob.size < 100) {
+      throw new Error('ملف PDF فارغ.');
     }
 
     return blob;
@@ -274,133 +304,133 @@ document.body.appendChild(report);
   }
 }
 
-/* إنشاء القائمة للطباعة أو الحفظ كـ PDF */
-document.getElementById('createButton')
-  .addEventListener('click', async event => {
-    const button = event.currentTarget;
-    const items = getItems();
+/* =========================
+   تنزيل PDF
+========================= */
 
-    if (!items.length) {
-      alert('اكتبي طلبًا واحدًا على الأقل.');
-      return;
-    }
+function downloadPdfBlob(blob) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
 
-    if (button.dataset.busy === 'true') return;
+  link.href = url;
+  link.download = 'طلبات-البيت.pdf';
+  link.style.display = 'none';
 
-    button.dataset.busy = 'true';
-    button.disabled = true;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 
-    try {
-      const blob = await generateOrdersPdf(items);
-      const url = URL.createObjectURL(blob);
-      const win = window.open(url, '_blank');
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
 
-      if (!win) {
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'طلبات-البيت.pdf';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      }
+/* منع الضغط المتكرر على الأزرار */
+async function runPdfAction(button, action, loadingText) {
+  if (!button || button.dataset.busy === 'true') return;
 
-      setTimeout(() => URL.revokeObjectURL(url), 120000);
-    } catch (error) {
-      console.error('خطأ في إنشاء PDF:', error);
-      alert('تعذر إنشاء PDF. تأكدي من اتصالك بالإنترنت وحاولي مرة أخرى.');
-    } finally {
-      button.disabled = false;
-      button.dataset.busy = 'false';
-    }
+  const items = getItems();
+
+  if (!items.length) {
+    alert('اكتبي طلبًا واحدًا على الأقل.');
+    return;
+  }
+
+  const originalText = button.textContent;
+
+  button.dataset.busy = 'true';
+  button.disabled = true;
+  button.textContent = loadingText;
+
+  try {
+    const blob = await generateOrdersPdf(items);
+    await action(blob);
+  } catch (error) {
+    console.error('خطأ أثناء تجهيز PDF:', error);
+
+    alert(
+      'تعذر تجهيز ملف PDF. تأكدي من اتصال الإنترنت وتحميل مكتبة PDF، ثم حاولي مرة أخرى.'
+    );
+  } finally {
+    button.disabled = false;
+    button.dataset.busy = 'false';
+    button.textContent = originalText;
+  }
+}
+
+/* =========================
+   زر إنشاء PDF
+========================= */
+
+const createButton = document.getElementById('createButton');
+
+if (createButton) {
+  createButton.addEventListener('click', () => {
+    runPdfAction(
+      createButton,
+      async blob => {
+        downloadPdfBlob(blob);
+      },
+      'جارٍ إنشاء PDF...'
+    );
   });
+}
 
-/* مشاركة ملف PDF كامل */
-document.getElementById('shareButton')
-  .addEventListener('click', async event => {
-    const button = event.currentTarget;
-    const items = getItems();
+/* =========================
+   زر مشاركة PDF
+========================= */
 
-    if (!items.length) {
-      alert('اكتبي طلبًا واحدًا على الأقل قبل المشاركة.');
-      return;
-    }
+const shareButton = document.getElementById('shareButton');
 
-    if (button.dataset.busy === 'true') return;
+if (shareButton) {
+  shareButton.addEventListener('click', () => {
+    runPdfAction(
+      shareButton,
+      async blob => {
+        const file = new File(
+          [blob],
+          'طلبات-البيت.pdf',
+          { type: 'application/pdf' }
+        );
 
-    button.dataset.busy = 'true';
-    button.disabled = true;
+        if (
+          navigator.share &&
+          navigator.canShare &&
+          navigator.canShare({ files: [file] })
+        ) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'قائمة طلبات البيت',
+              text: 'قائمة طلبات البيت كاملة بصيغة PDF'
+            });
 
-    const originalText = button.textContent;
-
-    try {
-      button.textContent = 'جارٍ تجهيز ملف PDF...';
-
-      const blob = await generateOrdersPdf(items);
-      const file = new File(
-        [blob],
-        'طلبات-البيت.pdf',
-        { type: 'application/pdf' }
-      );
-
-      if (
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({ files: [file] })
-      ) {
-        button.textContent = 'اختاري واتساب من قائمة المشاركة...';
-
-        try {
-          await navigator.share({
-            files: [file],
-            title: 'قائمة طلبات البيت',
-            text: 'قائمة طلبات البيت كاملة بصيغة PDF'
-          });
-
-          return;
-        } catch (shareError) {
-          if (shareError.name === 'AbortError') {
             return;
+          } catch (error) {
+            if (error.name === 'AbortError') {
+              return;
+            }
+
+            console.warn(
+              'تعذرت المشاركة المباشرة:',
+              error
+            );
           }
-
-          console.warn(
-            'تعذرت المشاركة المباشرة، سيتم تنزيل الملف:',
-            shareError
-          );
         }
-      }
 
-      /* بديل الكمبيوتر والمتصفحات غير الداعمة للمشاركة */
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
+        downloadPdfBlob(blob);
 
-      link.href = url;
-      link.download = 'طلبات-البيت.pdf';
-      link.style.display = 'none';
-
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      /* إبقاء رابط الملف متاحًا مدة كافية للمتصفح */
-      setTimeout(() => URL.revokeObjectURL(url), 120000);
-
-      alert(
-        'تم تنزيل ملف PDF كامل. افتحي واتساب وأرفقي الملف من مجلد التنزيلات.'
-      );
-    } catch (error) {
-      console.error('خطأ في مشاركة PDF:', error);
-
-      alert(
-        'حصلت مشكلة أثناء تجهيز ملف PDF. حدّثي الصفحة وحاولي مرة أخرى.'
-      );
-    } finally {
-      button.disabled = false;
-      button.dataset.busy = 'false';
-      button.textContent = originalText;
-    }
+        alert(
+          'تم تنزيل ملف PDF. افتحي واتساب وأرفقي الملف من مجلد التنزيلات.'
+        );
+      },
+      'جارٍ تجهيز PDF...'
+    );
   });
+}
 
-/* زر مسح الطلبات */
+/* =========================
+   مسح الطلبات
+========================= */
+
 const clearButton =
   document.getElementById('clearButton') ||
   document.getElementById('clearAllButton');
@@ -428,5 +458,12 @@ if (clearButton) {
   });
 }
 
-/* استرجاع الطلبات عند فتح الصفحة */
-loadItems();
+/* =========================
+   بدء تشغيل القائمة
+========================= */
+
+if (itemsBox) {
+  loadItems();
+} else {
+  console.error('لم يتم العثور على العنصر #items في HTML.');
+}
